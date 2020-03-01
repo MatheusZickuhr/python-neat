@@ -26,11 +26,11 @@ class NeatAgent:
             for element in self.population:
                 self.env.reset()
                 done = False
-                observation, _, _, _ = self.env.step(self.env.action_space.sample())
+                observation, _, _ = self.env.step(self.env.get_random_action())
                 while not done:
                     observation = keras.utils.normalize(observation)
                     action = element.get_next_action(observation)
-                    observation, reward, done, info = self.env.step(action)
+                    observation, reward, done = self.env.step(action)
                     element.fitness += reward if reward > 0 else 0
                 element.was_evaluated = True
             # self.normalize_polulation_fitness()
@@ -68,7 +68,7 @@ class NeatAgent:
         self.is_population_encoded = False
         decoded_population = []
         for e in self.population:
-            ann = NeatAnn(input_shape=self.input_shape, n_actions=self.env.action_space.n, topology=e['topology'])
+            ann = NeatAnn(input_shape=self.input_shape, n_actions=self.env.get_n_actions(), topology=e['topology'])
             ann.model.set_weights(e['weights'])
             ann.fitness = e['fitness']
             ann.was_evaluated = e['was_evaluated']
@@ -94,7 +94,7 @@ class NeatAgent:
     def create_population(self, size=1):
         population = []
         for i in tqdm(range(size), unit='population element'):
-            population.append(NeatAnn(input_shape=self.input_shape, n_actions=self.env.action_space.n))
+            population.append(NeatAnn(input_shape=self.input_shape, n_actions=self.env.get_n_actions()))
 
         return population
 
