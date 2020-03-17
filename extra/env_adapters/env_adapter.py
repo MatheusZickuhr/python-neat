@@ -1,7 +1,8 @@
 class EnvAdapter:
 
-    def __init__(self, env):
+    def __init__(self, env, render=False):
         self.env = env
+        self.render = render
 
     def reset(self):
         raise NotImplementedError('reset method must be implemented')

@@ -1,4 +1,4 @@
-from env_adapter import EnvAdapter
+from extra.env_adapters.env_adapter import EnvAdapter
 
 
 class GymEnvAdapter(EnvAdapter):
@@ -7,6 +7,9 @@ class GymEnvAdapter(EnvAdapter):
         self.env.reset()
 
     def step(self, action):
+        if self.render:
+            self.env.render()
+
         observation, reward, done, info = self.env.step(action)
         return observation, float(reward), done
 

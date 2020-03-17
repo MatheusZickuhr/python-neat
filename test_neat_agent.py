@@ -1,29 +1,17 @@
 import gym
-import keras
-from keras.engine.saving import load_model
-import numpy as np
+from extra.env_adapters.gym_env_adapter import GymEnvAdapter
+from extra.neat_agent import NeatAgent
 
 env = gym.make('LunarLander-v2')
 
-model = load_model('models/nrf1_neat.model')
+env_adapter = GymEnvAdapter(env=env, render=True)
 
-env.reset()
+agent = NeatAgent(env_adapter=env_adapter, )
 
-observation, _, _, _ = env.step(0)
-total_reward = 0
-n_games = 1000
-for _ in range(n_games):
-    ep_reward = 0
-    done = False
-    while not done:
-        observation = keras.utils.normalize(observation)
-        action = np.argmax(model.predict(observation))
-        observation, reward, done, info = env.step(action)
-        # env.render()
-        ep_reward += reward
-        if done:
-            print(ep_reward)
-            total_reward += ep_reward
-            env.reset()
-
-print(f'avg reward {total_reward / n_games + 1}')
+agent.train(
+    population_size=100,
+    input_shape=(8,),
+    number_of_generations=3,
+    selection_percentage=0.2,
+    mutation_chance=0.1
+)

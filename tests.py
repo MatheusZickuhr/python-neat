@@ -4,7 +4,7 @@ import unittest
 class EnvAdaptersTest(unittest.TestCase):
 
     def test_gym_env(self):
-        from gym_env_adapter import GymEnvAdapter
+        from extra.env_adapters.gym_env_adapter import GymEnvAdapter
         import gym
 
         env = gym.make('LunarLander-v2')
@@ -14,7 +14,7 @@ class EnvAdaptersTest(unittest.TestCase):
         self.execute_env_adapter(adapter)
 
     def test_ple_adapter(self):
-        from ple_env_adapter import PleEnvAdapter
+        from extra.env_adapters.ple_env_adapter import PleEnvAdapter
         from ple.games.pong import Pong
         from ple import PLE
 

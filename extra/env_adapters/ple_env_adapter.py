@@ -1,4 +1,4 @@
-from env_adapter import EnvAdapter
+from extra.env_adapters.env_adapter import EnvAdapter
 import random
 
 
