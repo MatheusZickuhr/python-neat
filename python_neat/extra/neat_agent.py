@@ -1,6 +1,6 @@
 import keras
 
-from core.genetic_algorithm import GeneticAlgorithm
+from python_neat.core.genetic_algorithm import GeneticAlgorithm
 
 
 class NeatAgent:

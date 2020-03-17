@@ -1,6 +1,6 @@
 import gym
-from extra.env_adapters.gym_env_adapter import GymEnvAdapter
-from extra.neat_agent import NeatAgent
+from python_neat.extra.env_adapters.gym_env_adapter import GymEnvAdapter
+from python_neat.extra.neat_agent import NeatAgent
 
 env = gym.make('LunarLander-v2')
 

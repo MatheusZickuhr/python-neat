@@ -1,4 +1,4 @@
-from extra.env_adapters.env_adapter import EnvAdapter
+from python_neat.extra.env_adapters.env_adapter import EnvAdapter
 
 
 class GymEnvAdapter(EnvAdapter):

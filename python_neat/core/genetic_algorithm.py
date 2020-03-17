@@ -1,7 +1,7 @@
 import random
 
-from core.neat_ann import NeatAnn
-from core.random_probability_selection import RandomProbabilitySelection
+from python_neat.core.neat_ann import NeatAnn
+from python_neat.core.random_probability_selection import RandomProbabilitySelection
 
 
 class GeneticAlgorithm:
