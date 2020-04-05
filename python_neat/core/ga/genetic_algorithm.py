@@ -1,29 +1,34 @@
 import random
 
-from python_neat.core.neat_ann import NeatAnn
-from python_neat.core.random_probability_selection import RandomProbabilitySelection
+from python_neat.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
+from python_neat.core.ga.random_probability_selection import RandomProbabilitySelection
+from tqdm import tqdm
 
 
 class GeneticAlgorithm:
 
-    def __init__(self, population_size, selection_percentage, mutation_chance, input_shape, output_size):
+    def __init__(self, population_size, selection_percentage, mutation_chance, input_shape, output_size,
+                 fitness_threshold):
         self.population_size = population_size
         self.input_shape = input_shape
         self.output_size = output_size
         self.population = self.create_population()
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
         self.mutation_chance = mutation_chance
+        self.fitness_threshold = fitness_threshold
 
     def create_population(self):
-        return [NeatAnn(input_shape=self.input_shape, output_size=self.output_size)
-                for _ in range(self.population_size)]
+        return [NeNeuralNetwork(input_shape=self.input_shape, output_size=self.output_size)
+                for _ in tqdm(range(self.population_size), unit='population element created')]
 
     def run(self, number_of_generations, calculate_fitness_callback):
-        for _ in range(number_of_generations):
+        for _ in tqdm(range(number_of_generations), unit='generation'):
             self.calculate_fitness(calculate_fitness_callback)
             new_elements = self.crossover()
             self.mutate(new_elements)
             self.recycle(new_elements)
+            if self.get_best_element().fitness >= self.fitness_threshold:
+                break
 
     def crossover(self):
         total_fitness = sum([element.fitness for element in self.population])
@@ -56,3 +61,7 @@ class GeneticAlgorithm:
         for element in self.population:
             fitness = calculate_fitness_callback(element)
             element.fitness = fitness
+
+    def get_best_element(self):
+        self.population.sort(key=lambda element: element.fitness)
+        return self.population[-1]
