@@ -5,7 +5,7 @@ A neuroevolution library for python
 # how to install
 
 ```
-git clone https://github.com/MatheusZickuhr/python-neat.git
+git clone https://github.com/MatheusZickuhr/python-ne.git
 cd python-neat
 pip install -r requirements.txt
 ```
