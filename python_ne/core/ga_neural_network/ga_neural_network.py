@@ -1,6 +1,7 @@
 class GaNeuralNetwork:
 
-    def __init__(self, create_model=True, output_size=None, input_shape=None):
+    def __init__(self, backend_adapter, create_model=True, output_size=None, input_shape=None,):
+        self.backend_adapter = backend_adapter
         self.input_shape = input_shape
         self.output_size = output_size
         self.fitness = 0

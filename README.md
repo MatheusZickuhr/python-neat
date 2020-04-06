@@ -36,7 +36,8 @@ genetic_algorithm = GeneticAlgorithm(
     selection_percentage=0.5,
     mutation_chance=0.1,
     fitness_threshold=4,
-    ne_type='ne' # ne or neat
+    ne_type='ne',  # ne or neat
+    backend_adapter='default'  # default or keras
 )
 
 genetic_algorithm.run(
@@ -46,7 +47,7 @@ genetic_algorithm.run(
 
 best_element = genetic_algorithm.get_best_element()
 
-
 print(f'the fitness of the best element is {best_element.fitness}')
+
 
 ```

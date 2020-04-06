@@ -20,13 +20,15 @@ class NeatNeuralNetwork(GaNeuralNetwork):
         return [random.choice(number_of_neurons_choices) for _ in range(hidden_layers_count)]
 
     def create_model(self):
-        model = NeuralNetwork()
+        model = self.backend_adapter()
 
         for i, units in enumerate(self.topology):
-            model.add(DenseLayer(units=units, input_shape=self.input_shape, activation=activations.sigmoid) if i == 0
-                      else DenseLayer(units=units, activation=activations.sigmoid))
+            if i == 0:
+                model.add_dense_layer(units=units, input_shape=self.input_shape, activation=activations.sigmoid)
+            else:
+                model.add_dense_layer(units=units, activation=activations.sigmoid)
 
-        model.add(DenseLayer(units=self.output_size, activation=activations.sigmoid))
+        model.add_dense_layer(units=self.output_size, activation=activations.sigmoid)
 
         return model
 
@@ -37,18 +39,20 @@ class NeatNeuralNetwork(GaNeuralNetwork):
         child1 = NeatNeuralNetwork(
             input_shape=self.input_shape,
             output_size=self.output_size,
-            topology=[*self.topology[:len(self.topology) // 2], *other.topology[len(other.topology) // 2:]]
+            topology=[*self.topology[:len(self.topology) // 2], *other.topology[len(other.topology) // 2:]],
+            backend_adapter=self.backend_adapter,
         )
 
         child2 = NeatNeuralNetwork(
             input_shape=self.input_shape,
             output_size=self.output_size,
-            topology=[*other.topology[:len(other.topology) // 2], *self.topology[len(self.topology) // 2:]]
+            topology=[*other.topology[:len(other.topology) // 2], *self.topology[len(self.topology) // 2:]],
+            backend_adapter=self.backend_adapter
         )
         return child1, child2
 
     def mutate(self):
-        for layer in self.model.layers:
+        for layer in self.model.get_layers():
             weights = layer.get_weights()[0]
             bias = layer.get_weights()[1]
 
