@@ -1,5 +1,5 @@
-# python-neat
-A neuroevolution of augmenting topologies library for python
+# python-ne
+A neuroevolution library for python
 
 
 # how to install
@@ -10,24 +10,43 @@ cd python-neat
 pip install -r requirements.txt
 ```
 
-# example
+# example (xor)
 
 ```python
-import gym
-from python_ne.extra.env_adapters.gym_env_adapter import GymEnvAdapter
-from python_ne.extra.ne_agent import NeatAgent
+from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
+import numpy as np
 
-env = gym.make('LunarLander-v2')
 
-env_adapter = GymEnvAdapter(env=env, render=True)
+def calc_fitness(element):
+    X = np.array([[0, 0], [1, 0], [0, 1], [1, 1], ])
+    Y = np.array([0, 1, 1, 0])
 
-agent = NeatAgent(env_adapter=env_adapter, )
+    fitness = 0
+    for x, y in zip(X, Y):
+        prediction = element.get_output(x)
+        if prediction == y:
+            fitness += 1
+    return fitness
 
-agent.train(
-    population_size=100,
-    input_shape=(8,),
-    number_of_generations=3,
-    selection_percentage=0.2,
-    mutation_chance=0.1
+
+genetic_algorithm = GeneticAlgorithm(
+    population_size=200,
+    input_shape=(2,),
+    output_size=2,
+    selection_percentage=0.5,
+    mutation_chance=0.1,
+    fitness_threshold=4,
+    ne_type='ne' # ne or neat
 )
+
+genetic_algorithm.run(
+    number_of_generations=1000,
+    calculate_fitness_callback=calc_fitness
+)
+
+best_element = genetic_algorithm.get_best_element()
+
+
+print(f'the fitness of the best element is {best_element.fitness}')
+
 ```
