@@ -1,29 +1,33 @@
 import random
 
-from keras import Sequential
-from keras.layers import Dense
+import numpy as np
+from python_ne.core.ga_neural_network.ga_neural_network import GaNeuralNetwork
+from python_ne.core.ga import randomly_combine_lists
+from python_ne.core.neural_network.dense_layer import DenseLayer
+from python_ne.core.neural_network.neural_network import NeuralNetwork
+from python_ne.core.neural_network import activations
 
-from python_neat.core.ga_neural_network.neural_network import NeuralNetwork
-from python_neat.core.ga import randomly_combine_lists
 
-
-class NeNeuralNetwork(NeuralNetwork):
+class NeNeuralNetwork(GaNeuralNetwork):
     def create_model(self):
-        model = Sequential()
-        model.add(Dense(activation='sigmoid', input_shape=self.input_shape, units=2, bias_initializer='random_uniform'))
-        model.add(Dense(activation='sigmoid', units=self.output_size, bias_initializer='random_uniform'))
+        model = NeuralNetwork()
+        model.add(DenseLayer(activation=activations.sigmoid, input_shape=self.input_shape, units=128, ))
+        model.add(DenseLayer(activation=activations.sigmoid, units=128, ))
+        model.add(DenseLayer(activation=activations.sigmoid, units=self.output_size, ))
         return model
 
     def get_output(self, obs):
-        # return np.argmax(self.model.predict(obs))
-        return round(self.model.predict(obs)[0][0])
+        return np.argmax(self.model.predict(obs))
 
     def crossover(self, other):
+        return self.simple_crossover(other)
+
+    def complex_crossover(self, other):
         child1 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size)
         child2 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size)
 
-        child1.model = Sequential()
-        child2.model = Sequential()
+        child1.model = NeuralNetwork()
+        child2.model = NeuralNetwork()
 
         for parent1_layer, parent2_layer in zip(self.model.layers, other.model.layers):
             parent1_weights = parent1_layer.get_weights()[0]
@@ -45,17 +49,39 @@ class NeNeuralNetwork(NeuralNetwork):
             bias_combination_1, bias_combination_2 = randomly_combine_lists \
                 .get_random_lists_combinations(parent1_bias, parent2_bias, return_shape=parent1_bias.shape)
 
-            child1.model.add(Dense(
+            child1.model.add(DenseLayer(
                 weights=[weight_combination1, bias_combination_1],
                 input_shape=(parent1_layer.input_shape[-1],),
-                units=parent1_layer.units
+                units=parent1_layer.units,
+                activation=activations.sigmoid
             ))
-            child2.model.add(Dense(
+            child2.model.add(DenseLayer(
                 weights=[weight_combination2, bias_combination_2],
                 input_shape=(parent1_layer.input_shape[-1],),
-                units=parent1_layer.units
+                units=parent1_layer.units,
+                activation=activations.sigmoid
             ))
         return child1, child2
+
+    def simple_crossover(self, other):
+        n_children = 2
+        children = []
+
+        for i in range(n_children):
+            child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size)
+            children.append(child)
+            child.model = NeuralNetwork()
+            for layers in zip(self.model.layers, other.model.layers):
+                chosen_layer = random.choice(layers)
+                child.model.add(
+                    DenseLayer(
+                        units=chosen_layer.units,
+                        input_shape=chosen_layer.input_shape,
+                        weights=chosen_layer.get_weights(),
+                        activation=activations.sigmoid
+                    )
+                )
+        return children
 
     def mutate(self):
         for layer in self.model.layers:

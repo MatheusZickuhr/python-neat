@@ -14,8 +14,8 @@ pip install -r requirements.txt
 
 ```python
 import gym
-from python_neat.extra.env_adapters.gym_env_adapter import GymEnvAdapter
-from python_neat.extra.neat_agent import NeatAgent
+from python_ne.extra.env_adapters.gym_env_adapter import GymEnvAdapter
+from python_ne.extra.ne_agent import NeatAgent
 
 env = gym.make('LunarLander-v2')
 

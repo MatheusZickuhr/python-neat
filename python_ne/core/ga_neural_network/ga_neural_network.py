@@ -1,4 +1,4 @@
-class NeuralNetwork:
+class GaNeuralNetwork:
 
     def __init__(self, create_model=True, output_size=None, input_shape=None):
         self.input_shape = input_shape

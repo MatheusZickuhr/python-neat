@@ -1,4 +1,4 @@
-from python_neat.core.ga.genetic_algorithm import GeneticAlgorithm
+from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
 import numpy as np
 
 
@@ -8,7 +8,7 @@ def calc_fitness(element):
 
     fitness = 0
     for x, y in zip(X, Y):
-        prediction = element.get_output(x.reshape(1, 2))
+        prediction = element.get_output(x)
         if prediction == y:
             fitness += 1
     return fitness
@@ -17,19 +17,19 @@ def calc_fitness(element):
 genetic_algorithm = GeneticAlgorithm(
     population_size=200,
     input_shape=(2,),
-    output_size=1,
+    output_size=2,
     selection_percentage=0.5,
     mutation_chance=0.1,
-    fitness_threshold=4
+    fitness_threshold=4,
+    ne_type='ne' # ne or neat
 )
 
 genetic_algorithm.run(
-    number_of_generations=500,
+    number_of_generations=1000,
     calculate_fitness_callback=calc_fitness
 )
 
 best_element = genetic_algorithm.get_best_element()
 
-for e in genetic_algorithm.population:
-    print(e)
+
 print(f'the fitness of the best element is {best_element.fitness}')

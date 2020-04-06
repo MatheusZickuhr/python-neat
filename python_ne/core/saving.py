@@ -1,6 +1,6 @@
 from keras.engine.saving import load_model
 
-from python_neat.core.ga_neural_network.neat_neural_network import NeatNeuralNetwork
+from python_ne.core.ga_neural_network.neat_neural_network import NeatNeuralNetwork
 
 
 def save_element(element, file_path):

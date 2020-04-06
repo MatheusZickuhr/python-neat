@@ -1,24 +1,35 @@
 import random
 
-from python_neat.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
-from python_neat.core.ga.random_probability_selection import RandomProbabilitySelection
+from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
+from python_ne.core.ga.random_probability_selection import RandomProbabilitySelection
 from tqdm import tqdm
+from python_ne.core.ga_neural_network.neat_neural_network import NeatNeuralNetwork
+
+
+def get_ga_neural_network_class_type(value):
+    if value == 'ne':
+        return NeNeuralNetwork
+    elif value == 'neat':
+        return NeatNeuralNetwork
+    else:
+        raise Exception(f'\'{value}\' ne_type not found, choices are ne or neat')
 
 
 class GeneticAlgorithm:
 
     def __init__(self, population_size, selection_percentage, mutation_chance, input_shape, output_size,
-                 fitness_threshold):
+                 fitness_threshold, ne_type):
         self.population_size = population_size
         self.input_shape = input_shape
         self.output_size = output_size
+        self.ne_nn_class_type = get_ga_neural_network_class_type(ne_type)
         self.population = self.create_population()
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
         self.mutation_chance = mutation_chance
         self.fitness_threshold = fitness_threshold
 
     def create_population(self):
-        return [NeNeuralNetwork(input_shape=self.input_shape, output_size=self.output_size)
+        return [self.ne_nn_class_type(input_shape=self.input_shape, output_size=self.output_size)
                 for _ in tqdm(range(self.population_size), unit='population element created')]
 
     def run(self, number_of_generations, calculate_fitness_callback):
