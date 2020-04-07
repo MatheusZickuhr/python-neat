@@ -1,7 +1,5 @@
 import random
 
-from python_ne.core.backend_adapters.default_backend_adapter import DefaultBackendAdapter
-from python_ne.core.backend_adapters.keras_backend_adapter import KerasBackendAdapter
 from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 from python_ne.core.ga.random_probability_selection import RandomProbabilitySelection
 from tqdm import tqdm
@@ -20,9 +18,11 @@ def get_ga_neural_network_class_type(value):
 def get_backend_adapter(value):
     if value == 'default':
         print('backend is default')
+        from python_ne.core.backend_adapters.default_backend_adapter import DefaultBackendAdapter
         return DefaultBackendAdapter
     elif value == 'keras':
         print('backend is keras')
+        from python_ne.core.backend_adapters.keras_backend_adapter import KerasBackendAdapter
         return KerasBackendAdapter
     else:
         raise Exception(f'\'{value}\' backend_adapter not found, choices are keras or default')

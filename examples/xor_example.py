@@ -14,23 +14,24 @@ def calc_fitness(element):
     return fitness
 
 
-genetic_algorithm = GeneticAlgorithm(
-    population_size=200,
-    input_shape=(2,),
-    output_size=2,
-    selection_percentage=0.5,
-    mutation_chance=0.1,
-    fitness_threshold=4,
-    ne_type='ne',  # ne or neat
-    backend_adapter='default',  # default or keras,
-    neural_network_config=[128, 128] # two hidden layers with 128 neurons each
-)
+if __name__ == '__main__':
+    genetic_algorithm = GeneticAlgorithm(
+        population_size=200,
+        input_shape=(2,),
+        output_size=2,
+        selection_percentage=0.5,
+        mutation_chance=0.1,
+        fitness_threshold=4,
+        ne_type='ne',  # ne or neat
+        backend_adapter='default',  # default or keras,
+        neural_network_config=[128, 128]  # two hidden layers with 128 neurons each
+    )
 
-genetic_algorithm.run(
-    number_of_generations=1000,
-    calculate_fitness_callback=calc_fitness
-)
+    genetic_algorithm.run(
+        number_of_generations=1000,
+        calculate_fitness_callback=calc_fitness
+    )
 
-best_element = genetic_algorithm.get_best_element()
+    best_element = genetic_algorithm.get_best_element()
 
-print(f'the fitness of the best element is {best_element.fitness}')
+    print(f'the fitness of the best element is {best_element.fitness}')
