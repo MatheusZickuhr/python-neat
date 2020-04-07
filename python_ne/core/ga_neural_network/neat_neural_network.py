@@ -41,13 +41,15 @@ class NeatNeuralNetwork(GaNeuralNetwork):
             output_size=self.output_size,
             topology=[*self.topology[:len(self.topology) // 2], *other.topology[len(other.topology) // 2:]],
             backend_adapter=self.backend_adapter,
+            neural_network_config=self.neural_network_config
         )
 
         child2 = NeatNeuralNetwork(
             input_shape=self.input_shape,
             output_size=self.output_size,
             topology=[*other.topology[:len(other.topology) // 2], *self.topology[len(self.topology) // 2:]],
-            backend_adapter=self.backend_adapter
+            backend_adapter=self.backend_adapter,
+            neural_network_config=self.neural_network_config
         )
         return child1, child2
 

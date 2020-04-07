@@ -11,8 +11,12 @@ from python_ne.core.neural_network import activations
 class NeNeuralNetwork(GaNeuralNetwork):
     def create_model(self):
         model = self.backend_adapter()
-        model.add_dense_layer(activation='sigmoid', input_shape=self.input_shape, units=128, )
-        model.add_dense_layer(activation='sigmoid', units=128, )
+        for i, unit_count in enumerate(self.neural_network_config):
+            if i == 0:
+                model.add_dense_layer(activation='sigmoid', input_shape=self.input_shape, units=unit_count, )
+            else:
+                model.add_dense_layer(activation='sigmoid', units=unit_count, )
+
         model.add_dense_layer(activation='sigmoid', units=self.output_size, )
         return model
 
@@ -24,9 +28,9 @@ class NeNeuralNetwork(GaNeuralNetwork):
 
     def complex_crossover(self, other):
         child1 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                 backend_adapter=self.backend_adapter)
+                                 backend_adapter=self.backend_adapter, neural_network_config=self.neural_network_config)
         child2 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                 backend_adapter=self.backend_adapter)
+                                 backend_adapter=self.backend_adapter, neural_network_config=self.neural_network_config)
 
         child1.model = self.backend_adapter()
         child2.model = self.backend_adapter()
@@ -71,7 +75,7 @@ class NeNeuralNetwork(GaNeuralNetwork):
 
         for i in range(n_children):
             child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                    backend_adapter=self.backend_adapter)
+                                    backend_adapter=self.backend_adapter, neural_network_config=self.neural_network_config)
             children.append(child)
             child.model = self.backend_adapter()
             for layers in zip(self.model.get_layers(), other.model.get_layers()):

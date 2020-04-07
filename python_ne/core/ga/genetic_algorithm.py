@@ -31,19 +31,19 @@ def get_backend_adapter(value):
 class GeneticAlgorithm:
 
     def __init__(self, population_size, selection_percentage, mutation_chance, input_shape, output_size,
-                 fitness_threshold, ne_type, backend_adapter='default'):
+                 fitness_threshold, ne_type, neural_network_config, backend_adapter='default'):
         self.population_size = population_size
         self.input_shape = input_shape
         self.output_size = output_size
         self.ne_nn_class_type = get_ga_neural_network_class_type(ne_type)
-        self.population = self.create_population(get_backend_adapter(backend_adapter))
+        self.population = self.create_population(neural_network_config, get_backend_adapter(backend_adapter))
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
         self.mutation_chance = mutation_chance
         self.fitness_threshold = fitness_threshold
 
-    def create_population(self, backend_adapter):
+    def create_population(self, neural_network_config, backend_adapter):
         return [self.ne_nn_class_type(input_shape=self.input_shape, output_size=self.output_size,
-                                      backend_adapter=backend_adapter)
+                                      backend_adapter=backend_adapter, neural_network_config=neural_network_config)
                 for _ in tqdm(range(self.population_size), unit='population element created')]
 
     def run(self, number_of_generations, calculate_fitness_callback):
