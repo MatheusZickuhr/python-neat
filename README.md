@@ -37,7 +37,8 @@ genetic_algorithm = GeneticAlgorithm(
     mutation_chance=0.1,
     fitness_threshold=4,
     ne_type='ne',  # ne or neat
-    backend_adapter='default'  # default or keras
+    backend_adapter='default',  # default or keras,
+    neural_network_config=[128, 128] # two hidden layers with 128 neurons each
 )
 
 genetic_algorithm.run(
@@ -48,6 +49,7 @@ genetic_algorithm.run(
 best_element = genetic_algorithm.get_best_element()
 
 print(f'the fitness of the best element is {best_element.fitness}')
+
 
 
 ```
