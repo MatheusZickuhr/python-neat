@@ -10,7 +10,7 @@ setup(
     author='Matheus Zickuhr',
     author_email='matheuszickuhr97@gmail.com',
     url='https://github.com/MatheusZickuhr/python-ne',
-    download_url='',
+    download_url='https://github.com/MatheusZickuhr/python-ne/archive/v0.1-alpha.tar.gz',
     keywords=['neuroevolution', 'neat', 'ne', 'ann', 'deep-learning'],
     install_requires=[
         'absl-py',
