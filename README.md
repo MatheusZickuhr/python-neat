@@ -2,7 +2,7 @@
 A neuroevolution library for python
 
 
-# how to install(from github)
+# how to install (github)
 
 ```
 git clone https://github.com/MatheusZickuhr/python-ne.git
@@ -10,7 +10,7 @@ cd python-ne
 pip install -r requirements.txt
 ```
 
-# how to install(from pip)
+# how to install (pip)
 
 ```
 pip install python-ne==0.1
