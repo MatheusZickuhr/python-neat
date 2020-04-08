@@ -1,4 +1,4 @@
-from python_neat.extra.env_adapters.env_adapter import EnvAdapter
+from python_ne.extra.env_adapters.env_adapter import EnvAdapter
 import random
 
 
