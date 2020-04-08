@@ -13,7 +13,9 @@ pip install -r requirements.txt
 # how to install (pip)
 
 ```
-pip install python-ne==0.1
+pip install python-ne
+```
+
 # example (xor)
 
 ```python
