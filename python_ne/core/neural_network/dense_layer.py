@@ -15,9 +15,9 @@ class DenseLayer:
         if self.weights is not None and self.bias is not None:
             return
 
-        self.bias = np.array([rnd.uniform(-1, 1) for _ in range(self.units)])
+        self.bias = np.random.uniform(low=-1, high=1, size=(self.units,))
         # number os neurons of the prev layer and number of neurons of this layer, shape = (input_shape[0], units)
-        self.weights = np.array([[rnd.uniform(-1, 1) for j in range(self.units)] for i in range(self.input_shape[0])])
+        self.weights = np.random.uniform(low=-1, high=1, size=(self.input_shape[0], self.units))
 
     def feedforward(self, xs):
         output = xs.dot(self.weights)
