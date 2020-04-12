@@ -1,28 +1,14 @@
 import random
 import numpy as np
-
 from python_ne.core.ga_neural_network.ga_neural_network import GaNeuralNetwork
-from python_ne.core.neural_network import activations
-from python_ne.core.neural_network.dense_layer import DenseLayer
-from python_ne.core.neural_network.neural_network import NeuralNetwork
-
-number_of_neurons_choices = [16, 32, 64, 128, 256, 512, 1024]
 
 
 class NeatNeuralNetwork(GaNeuralNetwork):
 
-    def __init__(self, topology=None, *args, **kwargs):
-        self.topology = self.create_topology() if topology is None else topology
-        super(NeatNeuralNetwork, self).__init__(*args, **kwargs)
-
-    def create_topology(self):
-        hidden_layers_count = random.randint(2, 8)
-        return [random.choice(number_of_neurons_choices) for _ in range(hidden_layers_count)]
-
     def create_model(self):
         model = self.backend_adapter()
 
-        for i, units in enumerate(self.topology):
+        for i, units in enumerate(self.neural_network_config):
             if i == 0:
                 model.add_dense_layer(units=units, input_shape=self.input_shape, activation='sigmoid')
             else:
@@ -32,28 +18,46 @@ class NeatNeuralNetwork(GaNeuralNetwork):
 
         model.initialize()
 
+        # randomly disable some neurons to create different topologies
+        for layer in model.get_layers():
+            layer_weights = layer.get_weights()
+            weights = layer_weights[0]
+            bias = layer_weights[1]
+
+            for j in range(len(weights[0])):
+                if random.random() < 0.1:
+                    for i in range(len(weights)):
+                        weights[i][j] = 0
+
+                    bias[j] = 0
+
+            layer.set_weights((weights, bias))
+
         return model
 
     def get_output(self, obs):
         return np.argmax(self.model.predict(obs))
 
     def crossover(self, other):
-        child1 = NeatNeuralNetwork(
-            input_shape=self.input_shape,
-            output_size=self.output_size,
-            topology=[*self.topology[:len(self.topology) // 2], *other.topology[len(other.topology) // 2:]],
-            backend_adapter=self.backend_adapter,
-            neural_network_config=self.neural_network_config
-        )
+        n_children = 2
+        children = []
 
-        child2 = NeatNeuralNetwork(
-            input_shape=self.input_shape,
-            output_size=self.output_size,
-            topology=[*other.topology[:len(other.topology) // 2], *self.topology[len(self.topology) // 2:]],
-            backend_adapter=self.backend_adapter,
-            neural_network_config=self.neural_network_config
-        )
-        return child1, child2
+        for i in range(n_children):
+            child = NeatNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
+                                      backend_adapter=self.backend_adapter,
+                                      neural_network_config=self.neural_network_config)
+            children.append(child)
+            child.model = self.backend_adapter()
+            for layers in zip(self.model.get_layers(), other.model.get_layers()):
+                chosen_layer = random.choice(layers)
+                child.model.add_dense_layer(
+                    units=chosen_layer.get_units(),
+                    input_shape=chosen_layer.get_input_shape(),
+                    weights=chosen_layer.get_weights(),
+                    activation='sigmoid'
+                )
+
+        return children
 
     def mutate(self):
         for layer in self.model.get_layers():
