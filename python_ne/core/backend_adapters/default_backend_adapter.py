@@ -6,6 +6,10 @@ from python_ne.core.neural_network.neural_network import NeuralNetwork
 
 
 class DefaultBackendAdapter(BackendAdapter):
+
+    def initialize(self):
+        self.model.initialize()
+
     def add_dense_layer(self, **kwargs):
         if kwargs['activation'] == 'sigmoid':
             kwargs['activation'] = activations.sigmoid
@@ -28,3 +32,13 @@ class DefaultBackendAdapter(BackendAdapter):
 
     def get_layers(self):
         return [DefaultDenseLayerAdapter(layer) for layer in self.model.layers]
+
+    def save(self, file_path):
+        self.model.save(file_path)
+
+    @staticmethod
+    def load(file_path):
+        nn = NeuralNetwork.load(file_path)
+        new_adapter = DefaultBackendAdapter()
+        new_adapter.model = nn
+        return new_adapter

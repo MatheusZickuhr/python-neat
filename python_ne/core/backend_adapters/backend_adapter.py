@@ -18,5 +18,15 @@ class BackendAdapter:
     def predict(self, obs):
         raise NotImplementedError()
 
+    def initialize(self):
+        raise NotImplementedError()
+
     def get_layers(self):
+        raise NotImplementedError()
+
+    def save(self, file_path):
+        raise NotImplementedError()
+
+    @staticmethod
+    def load(file_path):
         raise NotImplementedError()

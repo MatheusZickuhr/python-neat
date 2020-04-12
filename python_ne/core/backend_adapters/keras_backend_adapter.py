@@ -24,3 +24,6 @@ class KerasBackendAdapter(BackendAdapter):
 
     def get_layers(self):
         return [KerasDenseLayerAdapter(layer) for layer in self.model.layers]
+
+    def save(self, file_path):
+        self.model.save_weights(file_path)

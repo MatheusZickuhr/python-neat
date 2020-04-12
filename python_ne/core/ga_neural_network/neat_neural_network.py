@@ -24,11 +24,13 @@ class NeatNeuralNetwork(GaNeuralNetwork):
 
         for i, units in enumerate(self.topology):
             if i == 0:
-                model.add_dense_layer(units=units, input_shape=self.input_shape, activation=activations.sigmoid)
+                model.add_dense_layer(units=units, input_shape=self.input_shape, activation='sigmoid')
             else:
-                model.add_dense_layer(units=units, activation=activations.sigmoid)
+                model.add_dense_layer(units=units, activation='sigmoid')
 
-        model.add_dense_layer(units=self.output_size, activation=activations.sigmoid)
+        model.add_dense_layer(units=self.output_size, activation='sigmoid')
+
+        model.initialize()
 
         return model
 

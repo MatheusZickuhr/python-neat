@@ -20,7 +20,7 @@ if __name__ == '__main__':
         input_shape=(2,),
         output_size=2,
         selection_percentage=0.5,
-        mutation_chance=0.1,
+        mutation_chance=0.3,
         fitness_threshold=4,
         ne_type='ne',  # ne or neat
         backend_adapter='default',  # default or keras,

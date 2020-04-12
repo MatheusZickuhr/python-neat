@@ -1,5 +1,4 @@
-import random
-
+import random as rnd
 import numpy as np
 import copy
 
@@ -11,16 +10,14 @@ class DenseLayer:
         self.activation = activation
         self.input_shape = input_shape
         self.weights, self.bias = weights
-        self.initialized = False
 
     def initialize(self):
-        if self.initialized:
+        if self.weights is not None and self.bias is not None:
             return
 
-        self.bias = np.array([random.uniform(-1, 1) for _ in range(self.units)])
+        self.bias = np.array([rnd.uniform(-1, 1) for _ in range(self.units)])
         # number os neurons of the prev layer and number of neurons of this layer, shape = (input_shape[0], units)
-        self.weights = np.array([[random.uniform(-1, 1) for j in range(self.units)] for i in range(self.input_shape[0])])
-        self.initialized = True
+        self.weights = np.array([[rnd.uniform(-1, 1) for j in range(self.units)] for i in range(self.input_shape[0])])
 
     def feedforward(self, xs):
         output = xs.dot(self.weights)
