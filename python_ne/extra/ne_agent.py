@@ -1,6 +1,8 @@
 import numpy as np
 
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
+from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
+from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.neural_network import normalizer
 # from python_ne.core.saving import save_element, load_element
 
@@ -21,8 +23,8 @@ class NeAgent:
             selection_percentage=selection_percentage,
             mutation_chance=mutation_chance,
             fitness_threshold=fitness_threshold,
-            ne_type='ne',  # ne or neat
-            model_adapter='default',  # default or keras,
+            ne_type=NeNeuralNetwork,  # ne or neat
+            model_adapter=DefaultModelAdapter,  # default or keras,
             neural_network_config=[128, 128]  # two hidden layers with 128 neurons each
         )
 
@@ -37,15 +39,12 @@ class NeAgent:
     def calculate_fitness(self, element):
         return self.play(element)
 
-    # def save(self, file_path):
-    #     save_element(element=self.best_element, file_path=file_path)
-    #
-    # def load(self, file_path):
-    #     self.best_element = load_element(
-    #         file_path=file_path,
-    #         output_size=self.output_size,
-    #         input_shape=self.input_shape
-    #     )
+    def save(self, file_path):
+        self.best_element.save(file_path)
+
+    def load(self, file_path):
+        self.best_element = NeNeuralNetwork(create_model=False, model_adapter=DefaultModelAdapter)
+        self.best_element.load(file_path)
 
     def play(self, element=None):
         element = self.best_element if element is None else element
@@ -55,7 +54,7 @@ class NeAgent:
         fitness = 0
         while not done:
             observation = normalizer.normalize(observation)
-            action = element.get_output(np.array(observation))
+            action = np.argmax(element.get_output(np.array(observation)))
             observation, reward, done = self.env_adapter.step(action)
             fitness += reward if reward > 0 else 0
         return fitness

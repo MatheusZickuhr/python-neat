@@ -9,11 +9,13 @@ if __name__ == '__main__':
 
     agent = NeAgent(
         env_adapter=env_adapter,
-        population_size=100,
+        population_size=200,
         input_shape=(8,),
-        selection_percentage=0.2,
-        mutation_chance=0.1,
-        fitness_threshold=200
+        selection_percentage=0.5,
+        mutation_chance=0.3,
+        fitness_threshold=500
     )
 
     agent.train(number_of_generations=3, )
+
+    agent.save('ne_agent.json')
