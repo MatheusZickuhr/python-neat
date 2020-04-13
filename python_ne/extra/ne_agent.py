@@ -22,7 +22,7 @@ class NeAgent:
             mutation_chance=mutation_chance,
             fitness_threshold=fitness_threshold,
             ne_type='ne',  # ne or neat
-            backend_adapter='default',  # default or keras,
+            model_adapter='default',  # default or keras,
             neural_network_config=[128, 128]  # two hidden layers with 128 neurons each
         )
 

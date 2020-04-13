@@ -10,7 +10,7 @@ from python_ne.core.neural_network import activations
 
 class NeNeuralNetwork(GaNeuralNetwork):
     def create_model(self):
-        model = self.backend_adapter()
+        model = self.model_adapter()
         for i, unit_count in enumerate(self.neural_network_config):
             if i == 0:
                 model.add_dense_layer(activation='sigmoid', input_shape=self.input_shape, units=unit_count, )
@@ -25,12 +25,12 @@ class NeNeuralNetwork(GaNeuralNetwork):
 
     def complex_crossover(self, other):
         child1 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                 backend_adapter=self.backend_adapter, neural_network_config=self.neural_network_config)
+                                 model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
         child2 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                 backend_adapter=self.backend_adapter, neural_network_config=self.neural_network_config)
+                                 model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
 
-        child1.model = self.backend_adapter()
-        child2.model = self.backend_adapter()
+        child1.model = self.model_adapter()
+        child2.model = self.model_adapter()
 
         for parent1_layer, parent2_layer in zip(self.model.get_layers(), other.model.get_layers()):
             parent1_weights = parent1_layer.get_weights()[0]
@@ -72,9 +72,9 @@ class NeNeuralNetwork(GaNeuralNetwork):
 
         for i in range(n_children):
             child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                    backend_adapter=self.backend_adapter, neural_network_config=self.neural_network_config)
+                                    model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
             children.append(child)
-            child.model = self.backend_adapter()
+            child.model = self.model_adapter()
             for layers in zip(self.model.get_layers(), other.model.get_layers()):
                 chosen_layer = random.choice(layers)
                 child.model.add_dense_layer(

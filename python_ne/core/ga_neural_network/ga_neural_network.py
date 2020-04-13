@@ -1,8 +1,8 @@
 class GaNeuralNetwork:
 
-    def __init__(self, backend_adapter, neural_network_config=None, create_model=True, output_size=None,
+    def __init__(self, model_adapter, neural_network_config=None, create_model=True, output_size=None,
                  input_shape=None, ):
-        self.backend_adapter = backend_adapter
+        self.model_adapter = model_adapter
         self.neural_network_config = neural_network_config
         self.input_shape = input_shape
         self.output_size = output_size
@@ -28,7 +28,7 @@ class GaNeuralNetwork:
 
     def load(self, file_path):
         # load is an static method in the adapter class
-        self.model = self.backend_adapter.load(file_path)
+        self.model = self.model_adapter.load(file_path)
 
     def __str__(self):
         return f'fitness = {self.fitness}'

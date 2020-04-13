@@ -1,11 +1,11 @@
-from python_ne.core.backend_adapters.backend_adapter import BackendAdapter
-from python_ne.core.backend_adapters.default_dense_layer_adapter import DefaultDenseLayerAdapter
+from python_ne.core.model_adapters.model_adapter import ModelAdapter
+from python_ne.core.model_adapters.default_dense_layer_adapter import DefaultDenseLayerAdapter
 from python_ne.core.neural_network import activations
 from python_ne.core.neural_network.dense_layer import DenseLayer
 from python_ne.core.neural_network.neural_network import NeuralNetwork
 
 
-class DefaultBackendAdapter(BackendAdapter):
+class DefaultModelAdapter(ModelAdapter):
 
     def initialize(self):
         self.model.initialize()
@@ -39,6 +39,6 @@ class DefaultBackendAdapter(BackendAdapter):
     @staticmethod
     def load(file_path):
         nn = NeuralNetwork.load(file_path)
-        new_adapter = DefaultBackendAdapter()
+        new_adapter = DefaultModelAdapter()
         new_adapter.model = nn
         return new_adapter

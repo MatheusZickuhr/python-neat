@@ -6,44 +6,22 @@ from tqdm import tqdm
 from python_ne.core.ga_neural_network.neat_neural_network import NeatNeuralNetwork
 
 
-def get_ga_neural_network_class_type(value):
-    if value == 'ne':
-        return NeNeuralNetwork
-    elif value == 'neat':
-        return NeatNeuralNetwork
-    else:
-        raise Exception(f'\'{value}\' ne_type not found, choices are ne or neat')
-
-
-def get_backend_adapter(value):
-    if value == 'default':
-        print('backend is default')
-        from python_ne.core.backend_adapters.default_backend_adapter import DefaultBackendAdapter
-        return DefaultBackendAdapter
-    elif value == 'keras':
-        print('backend is keras')
-        from python_ne.core.backend_adapters.keras_backend_adapter import KerasBackendAdapter
-        return KerasBackendAdapter
-    else:
-        raise Exception(f'\'{value}\' backend_adapter not found, choices are keras or default')
-
-
 class GeneticAlgorithm:
 
     def __init__(self, population_size, selection_percentage, mutation_chance, input_shape, output_size,
-                 fitness_threshold, ne_type, neural_network_config, backend_adapter='default'):
+                 fitness_threshold, ne_type, neural_network_config, model_adapter):
         self.population_size = population_size
         self.input_shape = input_shape
         self.output_size = output_size
-        self.ne_nn_class_type = get_ga_neural_network_class_type(ne_type)
-        self.population = self.create_population(neural_network_config, get_backend_adapter(backend_adapter))
+        self.ne_nn_class_type = ne_type
+        self.population = self.create_population(neural_network_config, model_adapter)
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
         self.mutation_chance = mutation_chance
         self.fitness_threshold = fitness_threshold
 
-    def create_population(self, neural_network_config, backend_adapter):
+    def create_population(self, neural_network_config, model_adapter):
         return [self.ne_nn_class_type(input_shape=self.input_shape, output_size=self.output_size,
-                                      backend_adapter=backend_adapter, neural_network_config=neural_network_config)
+                                      model_adapter=model_adapter, neural_network_config=neural_network_config)
                 for _ in tqdm(range(self.population_size), unit='population element created')]
 
     def run(self, number_of_generations, calculate_fitness_callback):

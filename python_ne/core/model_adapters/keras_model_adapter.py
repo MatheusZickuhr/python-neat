@@ -2,11 +2,11 @@ import numpy as np
 from keras import Sequential
 from keras.layers import Dense
 
-from python_ne.core.backend_adapters.backend_adapter import BackendAdapter
-from python_ne.core.backend_adapters.keras_dense_layer_adapter import KerasDenseLayerAdapter
+from python_ne.core.model_adapters.model_adapter import ModelAdapter
+from python_ne.core.model_adapters.keras_dense_layer_adapter import KerasDenseLayerAdapter
 
 
-class KerasBackendAdapter(BackendAdapter):
+class KerasModelAdapter(ModelAdapter):
     def build_model(self):
         return Sequential()
 

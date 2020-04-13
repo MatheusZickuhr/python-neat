@@ -1,5 +1,9 @@
+from python_ne.core.ga_neural_network.neat_neural_network import NeatNeuralNetwork
+from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
 import numpy as np
+
+from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 
 
 def calc_fitness(element):
@@ -22,8 +26,8 @@ if __name__ == '__main__':
         selection_percentage=0.5,
         mutation_chance=0.3,
         fitness_threshold=4,
-        ne_type='ne',  # ne or neat
-        backend_adapter='default',  # default or keras,
+        ne_type=NeatNeuralNetwork,
+        model_adapter=DefaultModelAdapter,  # default or keras,
         neural_network_config=[128, 128]  # two hidden layers with 128 neurons each
     )
 

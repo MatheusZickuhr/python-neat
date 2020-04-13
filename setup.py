@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='python-ne',
-    packages=['python_ne', 'python_ne/core', 'python_ne/extra', 'python_ne/core/backend_adapters', 'python_ne/core/ga',
+    packages=['python_ne', 'python_ne/core', 'python_ne/extra', 'python_ne/core/model_adapters', 'python_ne/core/ga',
               'python_ne/core/ga_neural_network', 'python_ne/core/neural_network', 'python_ne/extra/env_adapters'],
     version='0.1',
     license='MIT',
