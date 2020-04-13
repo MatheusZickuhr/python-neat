@@ -35,9 +35,6 @@ class NeatNeuralNetwork(GaNeuralNetwork):
 
         return model
 
-    def get_output(self, obs):
-        return np.argmax(self.model.predict(obs))
-
     def crossover(self, other):
         n_children = 2
         children = []

@@ -20,9 +20,6 @@ class NeNeuralNetwork(GaNeuralNetwork):
         model.add_dense_layer(activation='sigmoid', units=self.output_size, )
         return model
 
-    def get_output(self, obs):
-        return np.argmax(self.model.predict(obs))
-
     def crossover(self, other):
         return self.simple_crossover(other)
 

@@ -8,7 +8,7 @@ def calc_fitness(element):
 
     fitness = 0
     for x, y in zip(X, Y):
-        prediction = element.get_output(x)
+        prediction = np.argmax(element.get_output(x))
         if prediction == y:
             fitness += 1
     return fitness
