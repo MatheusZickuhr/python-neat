@@ -1,34 +1,31 @@
 import numpy as np
-
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
-from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
-from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.neural_network import normalizer
-# from python_ne.core.saving import save_element, load_element
 
 
 class NeAgent:
 
-    def __init__(self, env_adapter, selection_percentage, mutation_chance, input_shape, population_size,
-                 fitness_threshold):
+    def __init__(self, env_adapter, model_adapter, ne_type):
         self.env_adapter = env_adapter
-        self.output_size = self.env_adapter.get_n_actions()
-        self.input_shape = input_shape
+        self.model_adapter = model_adapter
+        self.ne_type = ne_type
         self.best_element = None
+        self.genetic_algorithm = None
 
+    def train(self, number_of_generations, selection_percentage, mutation_chance,
+              input_shape, population_size, fitness_threshold, neural_network_config):
         self.genetic_algorithm = GeneticAlgorithm(
             population_size=population_size,
-            input_shape=self.input_shape,
-            output_size=self.output_size,
+            input_shape=input_shape,
+            output_size=self.env_adapter.get_n_actions(),
             selection_percentage=selection_percentage,
             mutation_chance=mutation_chance,
             fitness_threshold=fitness_threshold,
-            ne_type=NeNeuralNetwork,  # ne or neat
-            model_adapter=DefaultModelAdapter,  # default or keras,
-            neural_network_config=[128, 128]  # two hidden layers with 128 neurons each
+            ne_type=self.ne_type,
+            model_adapter=self.model_adapter,
+            neural_network_config=neural_network_config
         )
 
-    def train(self, number_of_generations):
         self.genetic_algorithm.run(
             number_of_generations=number_of_generations,
             calculate_fitness_callback=self.calculate_fitness
@@ -43,7 +40,10 @@ class NeAgent:
         self.best_element.save(file_path)
 
     def load(self, file_path):
-        self.best_element = NeNeuralNetwork(create_model=False, model_adapter=DefaultModelAdapter)
+        self.best_element = self.ne_type(
+            create_model=False,
+            model_adapter=self.model_adapter
+        )
         self.best_element.load(file_path)
 
     def play(self, element=None):
