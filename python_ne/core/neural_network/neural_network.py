@@ -31,12 +31,14 @@ class NeuralNetwork:
             #  next layer input shape
             input_shape = (layer.units,)
 
-    def predict(self, x_list):
+    def predict(self, xs):
+        input_shape = None
         output = None
         for index, layer in enumerate(self.layers):
-            layer.input_shape = x_list.shape if index == 0 else output.shape
+            layer.input_shape = layer.input_shape if index == 0 else input_shape
             layer.initialize()
-            output = layer.feedforward(x_list if index == 0 else output)
+            input_shape = (layer.units,)
+            output = layer.feedforward(xs if index == 0 else output)
 
         return output
 

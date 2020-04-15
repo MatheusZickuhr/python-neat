@@ -10,7 +10,8 @@ class PleEnvAdapter(EnvAdapter):
 
     def step(self, action) -> (object, float, bool):
         observation = self.env.getGameState()
-        reward = self.env.act(action)
+        observation = [val for key, val in observation.items()]
+        reward = self.env.act(self.env.getActionSet()[action])
         done = self.env.game_over()
         return observation, reward, done
 
@@ -18,4 +19,4 @@ class PleEnvAdapter(EnvAdapter):
         return len(self.env.getActionSet())
 
     def get_random_action(self):
-        return random.choice(self.env.getActionSet())
+        return random.randint(0, len(self.env.getActionSet()) - 1)

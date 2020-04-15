@@ -51,7 +51,7 @@ class NeAgent:
         self.env_adapter.reset()
         done = False
         observation, _, _ = self.env_adapter.step(self.env_adapter.get_random_action())
-        fitness = 0
+        fitness = 1
         while not done:
             observation = normalizer.normalize(observation)
             action = np.argmax(element.get_output(np.array(observation)))

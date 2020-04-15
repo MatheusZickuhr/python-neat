@@ -15,4 +15,4 @@ class DefaultDenseLayerAdapter(DenseLayerAdapter):
         self.layer.set_weights(weights)
 
     def get_input_shape(self):
-        return self.layer.input_shape,
+        return self.layer.input_shape

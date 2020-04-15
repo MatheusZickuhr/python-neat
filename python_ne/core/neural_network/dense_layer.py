@@ -18,6 +18,10 @@ class DenseLayer:
         self.weights = np.random.uniform(low=-1, high=1, size=(self.input_shape[0], self.units))
 
     def feedforward(self, xs):
+        if xs.shape != self.input_shape:
+            raise Exception('Dense layer got an invalid input shape.' +
+                            f' Was expecting {self.input_shape} but got {xs.shape} instead')
+
         output = xs.dot(self.weights)
         return self.activation(output + self.bias)
 

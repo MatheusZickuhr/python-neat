@@ -54,13 +54,13 @@ class NeNeuralNetwork(GaNeuralNetwork):
 
             child1.model.add_dense_layer(
                 weights=[weight_combination1, bias_combination_1],
-                input_shape=(parent1_layer.get_input_shape(),),
+                input_shape=parent1_layer.get_input_shape(),
                 units=parent1_layer.get_units(),
                 activation='sigmoid'
             )
             child2.model.add_dense_layer(
                 weights=[weight_combination2, bias_combination_2],
-                input_shape=(parent1_layer.get_input_shape(),),
+                input_shape=parent1_layer.get_input_shape(),
                 units=parent1_layer.get_units(),
                 activation='sigmoid'
             )
