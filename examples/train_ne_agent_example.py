@@ -1,5 +1,4 @@
 import gym
-
 from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.extra.env_adapters.gym_env_adapter import GymEnvAdapter
@@ -17,13 +16,13 @@ if __name__ == '__main__':
     )
 
     agent.train(
-        number_of_generations=3,
-        population_size=200,
+        number_of_generations=200,
+        population_size=500,
         input_shape=(8,),
         selection_percentage=0.5,
         mutation_chance=0.3,
-        fitness_threshold=500,
-        neural_network_config=[128, 128]
+        fitness_threshold=20000,
+        neural_network_config=[256, 256]
     )
 
     agent.save('ne_agent.json')

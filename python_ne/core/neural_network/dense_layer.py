@@ -1,6 +1,4 @@
-import random as rnd
 import numpy as np
-import copy
 
 
 class DenseLayer:
@@ -24,7 +22,7 @@ class DenseLayer:
         return self.activation(output + self.bias)
 
     def get_weights(self):
-        return copy.copy(self.weights), copy.copy(self.bias)
+        return np.copy(self.weights), np.copy(self.bias)
 
     def set_weights(self, weights):
         self.weights, self.bias = weights
