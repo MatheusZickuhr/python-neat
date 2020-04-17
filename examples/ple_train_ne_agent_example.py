@@ -2,11 +2,11 @@ from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.extra.ne_agent import NeAgent
 from python_ne.extra.env_adapters.ple_env_adapter import PleEnvAdapter
-from ple.games.pong import Pong
+from ple.games.flappybird import FlappyBird
 from ple import PLE
 
 if __name__ == '__main__':
-    env = PLE(Pong(), display_screen=False, force_fps=True)
+    env = PLE(FlappyBird(), display_screen=False, force_fps=True)
     env.init()
 
     env_adapter = PleEnvAdapter(env=env)
@@ -18,12 +18,12 @@ if __name__ == '__main__':
     )
 
     agent.train(
-        number_of_generations=30,
+        number_of_generations=150,
         population_size=500,
-        input_shape=(7,),
+        input_shape=(8,),
         selection_percentage=0.5,
         mutation_chance=0.3,
-        fitness_threshold=20000,
+        fitness_threshold=45,
         neural_network_config=[512, 512]
     )
 

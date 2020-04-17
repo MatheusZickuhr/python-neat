@@ -11,9 +11,12 @@ class NeAgent:
         self.ne_type = ne_type
         self.best_element = None
         self.genetic_algorithm = None
+        self.play_n_times = 1
 
     def train(self, number_of_generations, selection_percentage, mutation_chance,
-              input_shape, population_size, fitness_threshold, neural_network_config):
+              input_shape, population_size, fitness_threshold, neural_network_config,
+              play_n_times=1):
+        self.play_n_times = play_n_times
         self.genetic_algorithm = GeneticAlgorithm(
             population_size=population_size,
             input_shape=input_shape,
@@ -34,7 +37,7 @@ class NeAgent:
         self.best_element = self.genetic_algorithm.get_best_element()
 
     def calculate_fitness(self, element):
-        return self.play(element)
+        return np.mean([self.play(element) for _ in range(self.play_n_times)])
 
     def save(self, file_path):
         self.best_element.save(file_path)

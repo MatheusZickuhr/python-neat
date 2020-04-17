@@ -1,5 +1,7 @@
 MANIFEST
+PyGame-Learning-Environment/
 /dist/
 /venv/
 /.idea/
 *.pyc
+*.json
