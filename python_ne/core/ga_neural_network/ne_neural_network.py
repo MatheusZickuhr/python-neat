@@ -21,7 +21,7 @@ class NeNeuralNetwork(GaNeuralNetwork):
         return model
 
     def crossover(self, other):
-        return self.simple_crossover(other)
+        return self.complex_crossover(other)
 
     def complex_crossover(self, other):
         child1 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
@@ -33,11 +33,8 @@ class NeNeuralNetwork(GaNeuralNetwork):
         child2.model = self.model_adapter()
 
         for parent1_layer, parent2_layer in zip(self.model.get_layers(), other.model.get_layers()):
-            parent1_weights = parent1_layer.get_weights()[0]
-            parent2_weights = parent2_layer.get_weights()[0]
-
-            parent1_bias = parent1_layer.get_weights()[1]
-            parent2_bias = parent2_layer.get_weights()[1]
+            parent1_weights, parent1_bias = parent1_layer.get_weights()
+            parent2_weights, parent2_bias = parent2_layer.get_weights()
 
             prev_layer_neuron_count, current_layer_neuron_count = parent1_weights.shape
 
