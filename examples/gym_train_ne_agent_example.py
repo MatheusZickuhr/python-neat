@@ -22,8 +22,10 @@ if __name__ == '__main__':
         selection_percentage=0.5,
         mutation_chance=0.1,
         fitness_threshold=20000,
-        neural_network_config=[16, 16, 16],
-        play_n_times=1
+        neural_network_config=[256, 256],
+        play_n_times=5,
+        max_n_steps=250,
+        reward_if_max_step_reached=-100
     )
 
     agent.save('ne_agent.json')
