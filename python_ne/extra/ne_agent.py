@@ -29,10 +29,13 @@ class NeAgent:
             neural_network_config=neural_network_config
         )
 
-        self.genetic_algorithm.run(
-            number_of_generations=number_of_generations,
-            calculate_fitness_callback=self.calculate_fitness
-        )
+        try:
+            self.genetic_algorithm.run(
+                number_of_generations=number_of_generations,
+                calculate_fitness_callback=self.calculate_fitness
+            )
+        except KeyboardInterrupt:
+            print('training canceled')
 
         self.best_element = self.genetic_algorithm.get_best_element()
 
@@ -59,5 +62,5 @@ class NeAgent:
             observation = normalizer.normalize(observation)
             action = np.argmax(element.get_output(np.array(observation)))
             observation, reward, done = self.env_adapter.step(action)
-            fitness += reward if reward > 0 else 0
+            fitness += reward
         return fitness

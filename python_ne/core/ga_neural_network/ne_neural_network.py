@@ -21,7 +21,38 @@ class NeNeuralNetwork(GaNeuralNetwork):
         return model
 
     def crossover(self, other):
-        return self.complex_crossover(other)
+        return self.complex_crossover_new(other)
+
+    def complex_crossover_new(self, other):
+        n_children = 2
+        children = []
+
+        for _ in range(n_children):
+            child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
+                                    model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
+            children.append(child)
+            child.model = self.model_adapter()
+            for layer1, layer2 in zip(self.model.get_layers(), other.model.get_layers()):
+                weights1, bias1 = layer1.get_weights()
+                weights2, bias2 = layer1.get_weights()
+
+                child_weights = np.zeros(weights1.shape)
+                for i in range(weights1.shape[0]):
+                    for j in range(weights1.shape[1]):
+                        child_weights[i][j] = weights1[i][j] if random.random() < 0.5 else weights2[i][j]
+
+                child_bias = np.zeros(bias1.shape)
+                for i in range(bias1.shape[0]):
+                    child_bias[i] = bias1[i] if random.random() < 0.5 else bias2[i]
+
+                child.model.add_dense_layer(
+                    weights=(child_weights, child_bias),
+                    input_shape=layer1.get_input_shape(),
+                    units=layer1.get_units(),
+                    activation='sigmoid'
+                )
+
+        return children
 
     def complex_crossover(self, other):
         child1 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,

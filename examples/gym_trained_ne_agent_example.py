@@ -17,4 +17,5 @@ if __name__ == '__main__':
     )
 
     agent.load('ne_agent.json')
-    agent.play()
+    while 1:
+        print(agent.play())

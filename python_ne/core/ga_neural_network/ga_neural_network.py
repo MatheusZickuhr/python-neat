@@ -10,6 +10,7 @@ class GaNeuralNetwork:
         self.input_shape = input_shape
         self.output_size = output_size
         self.fitness = 0
+        self.raw_fitness = 0
         self.dense_layers = list()
         self.model = self.create_model() if create_model else None
         self.was_evaluated = False

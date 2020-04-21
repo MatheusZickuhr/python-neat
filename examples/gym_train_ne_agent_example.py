@@ -16,13 +16,14 @@ if __name__ == '__main__':
     )
 
     agent.train(
-        number_of_generations=200,
+        number_of_generations=1000,
         population_size=500,
         input_shape=(8,),
         selection_percentage=0.5,
-        mutation_chance=0.3,
+        mutation_chance=0.1,
         fitness_threshold=20000,
-        neural_network_config=[256, 256]
+        neural_network_config=[16, 16, 16],
+        play_n_times=1
     )
 
     agent.save('ne_agent.json')

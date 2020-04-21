@@ -1,3 +1,8 @@
+import os
+
+os.putenv('SDL_VIDEODRIVER', 'fbcon')
+os.environ["SDL_VIDEODRIVER"] = "dummy"
+
 from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.extra.ne_agent import NeAgent

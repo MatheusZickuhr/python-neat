@@ -1,10 +1,7 @@
 import random
-
 from python_ne.core.ga.logger import GaLogger
-from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 from python_ne.core.ga.random_probability_selection import RandomProbabilitySelection
 from tqdm import tqdm
-from python_ne.core.ga_neural_network.neat_neural_network import NeatNeuralNetwork
 
 
 class GeneticAlgorithm:
@@ -30,15 +27,16 @@ class GeneticAlgorithm:
         for generation in range(number_of_generations):
             self.logger.start_generation_log()
             self.calculate_fitness(calculate_fitness_callback)
+            self.normalize_fitness()
             new_elements = self.crossover()
             self.mutate(new_elements)
             self.recycle(new_elements)
             best_element = self.get_best_element()
             self.logger.finish_log_generation(
                 generation=generation,
-                best_element_fitness=best_element.fitness
+                best_element_fitness=best_element.raw_fitness
             )
-            if best_element.fitness >= self.fitness_threshold:
+            if best_element.raw_fitness >= self.fitness_threshold:
                 break
 
     def crossover(self):
@@ -72,6 +70,12 @@ class GeneticAlgorithm:
         for element in self.population:
             fitness = calculate_fitness_callback(element)
             element.fitness = fitness
+            element.raw_fitness = fitness
+
+    def normalize_fitness(self):
+        worst_fitness = min(self.population, key=lambda e: e.fitness).fitness
+        for element in self.population:
+            element.fitness += abs(worst_fitness)
 
     def get_best_element(self):
         self.population.sort(key=lambda element: element.fitness)
