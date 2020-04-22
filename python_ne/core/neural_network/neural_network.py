@@ -59,7 +59,7 @@ class NeuralNetwork:
                 DenseLayer(
                     units=layer['units'],
                     input_shape=tuple(layer['input_shape']),
-                    activation=activations.get_activation_from_str(layer['activation']),
+                    activation=layer['activation'],
                     weights=(np.array(layer['weights']), np.array(layer['bias']))
                 )
             )

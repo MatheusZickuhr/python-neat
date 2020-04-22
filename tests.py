@@ -2,7 +2,6 @@ import unittest
 
 import numpy as np
 
-from python_ne.core.neural_network import activations
 from python_ne.core.neural_network.dense_layer import DenseLayer
 from python_ne.core.neural_network.neural_network import NeuralNetwork
 
@@ -52,10 +51,10 @@ class NeuralNetworkTest(unittest.TestCase):
 
     def test_initialization_on_initialize_call(self):
         nn = NeuralNetwork()
-        nn.add(DenseLayer(units=256, activation=activations.sigmoid, input_shape=(1,)))
-        nn.add(DenseLayer(units=64, activation=activations.sigmoid))
-        nn.add(DenseLayer(units=256, activation=activations.sigmoid))
-        nn.add(DenseLayer(units=64, activation=activations.sigmoid))
+        nn.add(DenseLayer(units=256, activation='sigmoid', input_shape=(1,)))
+        nn.add(DenseLayer(units=64, activation='sigmoid'))
+        nn.add(DenseLayer(units=256, activation='sigmoid'))
+        nn.add(DenseLayer(units=64, activation='sigmoid'))
         nn.initialize()
 
         nn.predict(np.array([1]))
@@ -67,8 +66,8 @@ class NeuralNetworkTest(unittest.TestCase):
 
     def test_initialization_on_predict_called(self):
         nn = NeuralNetwork()
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid, input_shape=(1,)))
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid))
+        nn.add(DenseLayer(units=2, activation='sigmoid', input_shape=(1,)))
+        nn.add(DenseLayer(units=2, activation='sigmoid'))
         nn.predict(np.array([1]))
 
         for layer in nn.layers:
@@ -89,9 +88,9 @@ class NeuralNetworkTest(unittest.TestCase):
         layer2_bias = np.array([-.9, -.5])
 
         nn = NeuralNetwork()
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid, input_shape=(1,),
+        nn.add(DenseLayer(units=2, activation='sigmoid', input_shape=(1,),
                           weights=(layer1_weights, layer1_bias)))
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid, weights=(layer2_weights, layer2_bias)))
+        nn.add(DenseLayer(units=2, activation='sigmoid', weights=(layer2_weights, layer2_bias)))
         nn.predict(np.array([1]))
 
         self.assertEqual(str(layer1_weights), str(nn.layers[0].get_weights()[0]))
@@ -113,8 +112,8 @@ class NeuralNetworkTest(unittest.TestCase):
         layer2_bias = np.array([-.9, -.5])
 
         nn = NeuralNetwork()
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid, input_shape=(1,)))
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid))
+        nn.add(DenseLayer(units=2, activation='sigmoid', input_shape=(1,)))
+        nn.add(DenseLayer(units=2, activation='sigmoid'))
 
         nn.layers[0].set_weights((layer1_weights, layer1_bias))
         nn.layers[1].set_weights((layer2_weights, layer2_bias))
@@ -129,8 +128,8 @@ class NeuralNetworkTest(unittest.TestCase):
 
     def test_saving_and_loading(self):
         nn = NeuralNetwork()
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid, input_shape=(1,)))
-        nn.add(DenseLayer(units=2, activation=activations.sigmoid))
+        nn.add(DenseLayer(units=2, activation='sigmoid', input_shape=(1,)))
+        nn.add(DenseLayer(units=2, activation='sigmoid'))
         # do predict to initialize layers
         nn.predict(np.array([1]))
         nn.save('test_model.json')

@@ -11,11 +11,6 @@ class DefaultModelAdapter(ModelAdapter):
         self.model.initialize()
 
     def add_dense_layer(self, **kwargs):
-        if kwargs['activation'] == 'sigmoid':
-            kwargs['activation'] = activations.sigmoid
-        else:
-            raise Exception(f'activation function {kwargs["activation"]} is not valid')
-
         self.model.add(DenseLayer(**kwargs))
 
     def build_model(self):

@@ -1,11 +1,13 @@
 import numpy as np
 
+from python_ne.core.neural_network import activations
+
 
 class DenseLayer:
 
     def __init__(self, units, activation, input_shape=None, weights=(None, None,)):
         self.units = units
-        self.activation = activation
+        self.activation = activations.get_activation_from_str(activation)
         self.input_shape = input_shape
         self.weights, self.bias = weights
 
