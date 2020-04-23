@@ -18,7 +18,7 @@ if __name__ == '__main__':
     nn_config = (
         (16, 'sigmoid'),
         (16, 'sigmoid'),
-        (env_adapter.get_continuous_space_len(), 'sigmoid')
+        (env_adapter.get_continuous_space_len(), 'tanh')
     )
 
     agent.train(
