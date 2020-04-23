@@ -5,9 +5,9 @@ from python_ne.extra.env_adapters.gym_env_adapter import GymEnvAdapter
 from python_ne.extra.ne_agent import NeAgent
 
 if __name__ == '__main__':
-    env = gym.make('LunarLander-v2')
+    env = gym.make('BipedalWalker-v3')
 
-    env_adapter = GymEnvAdapter(env=env, render=False)
+    env_adapter = GymEnvAdapter(env=env, render=False, continuous=True)
 
     agent = NeAgent(
         env_adapter=env_adapter,
@@ -15,20 +15,19 @@ if __name__ == '__main__':
         model_adapter=DefaultModelAdapter,
     )
 
+    nn_config = (
+        (16, 'sigmoid'),
+        (16, 'sigmoid'),
+        (env_adapter.get_continuous_space_len(), 'sigmoid')
+    )
+
     agent.train(
         number_of_generations=1000,
-        population_size=500,
+        population_size=200,
         selection_percentage=0.5,
         mutation_chance=0.1,
         fitness_threshold=20000,
-        neural_network_config=(
-            (512, 'sigmoid'),
-            (512, 'sigmoid'),
-            (env_adapter.get_n_actions(), 'sigmoid')
-        ),
-        play_n_times=5,
-        max_n_steps=250,
-        reward_if_max_step_reached=-100
+        neural_network_config=nn_config,
     )
 
     agent.save('ne_agent.json')

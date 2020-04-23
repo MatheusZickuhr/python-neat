@@ -66,7 +66,12 @@ class NeAgent:
         step_count = 0
         while not done and step_count <= self.max_n_steps:
             observation = normalizer.normalize(observation)
-            action = np.argmax(element.get_output(np.array(observation)))
+
+            if self.env_adapter.is_continuous():
+                action = element.get_output(np.array(observation))
+            else:
+                action = np.argmax(element.get_output(np.array(observation)))
+
             observation, reward, done = self.env_adapter.step(action)
             fitness += reward
             step_count += 1

@@ -1,8 +1,9 @@
 class EnvAdapter:
 
-    def __init__(self, env, render=False):
+    def __init__(self, env, render=False, continuous=False):
         self.env = env
         self.render = render
+        self.continuous = continuous
 
     def get_input_shape(self):
         raise NotImplementedError('get_input_shape method must be implemented')
@@ -21,3 +22,9 @@ class EnvAdapter:
     def get_random_action(self):
         """must return a random action"""
         raise NotImplementedError('get_random_action method must be implemented')
+
+    def is_continuous(self):
+        return self.continuous
+
+    def get_continuous_space_len(self):
+        raise NotImplementedError('get_continuous_space_len method must be implemented')
