@@ -3,12 +3,10 @@ import random
 
 class GaNeuralNetwork:
 
-    def __init__(self, model_adapter, neural_network_config=None, create_model=True, output_size=None,
-                 input_shape=None, ):
+    def __init__(self, model_adapter, neural_network_config=None, create_model=True,input_shape=None, ):
         self.model_adapter = model_adapter
         self.neural_network_config = neural_network_config
         self.input_shape = input_shape
-        self.output_size = output_size
         self.fitness = 0
         self.raw_fitness = 0
         self.dense_layers = list()

@@ -8,13 +8,12 @@ class NeatNeuralNetwork(GaNeuralNetwork):
     def create_model(self):
         model = self.model_adapter()
 
-        for i, units in enumerate(self.neural_network_config):
+        for i, layer_config in enumerate(self.neural_network_config):
+            units, activation = layer_config
             if i == 0:
-                model.add_dense_layer(units=units, input_shape=self.input_shape, activation='sigmoid')
+                model.add_dense_layer(units=units, input_shape=self.input_shape, activation=activation)
             else:
-                model.add_dense_layer(units=units, activation='sigmoid')
-
-        model.add_dense_layer(units=self.output_size, activation='sigmoid')
+                model.add_dense_layer(units=units, activation=activation)
 
         model.initialize()
 
@@ -40,9 +39,12 @@ class NeatNeuralNetwork(GaNeuralNetwork):
         children = []
 
         for i in range(n_children):
-            child = NeatNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                      model_adapter=self.model_adapter,
-                                      neural_network_config=self.neural_network_config)
+            child = NeatNeuralNetwork(
+                create_model=False,
+                input_shape=self.input_shape,
+                model_adapter=self.model_adapter,
+                neural_network_config=self.neural_network_config
+            )
             children.append(child)
             child.model = self.model_adapter()
             for layers in zip(self.model.get_layers(), other.model.get_layers()):
@@ -51,7 +53,7 @@ class NeatNeuralNetwork(GaNeuralNetwork):
                     units=chosen_layer.get_units(),
                     input_shape=chosen_layer.get_input_shape(),
                     weights=chosen_layer.get_weights(),
-                    activation='sigmoid'
+                    activation=chosen_layer.get_activation()
                 )
 
         return children

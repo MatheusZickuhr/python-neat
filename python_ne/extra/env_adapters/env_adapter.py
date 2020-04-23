@@ -4,6 +4,9 @@ class EnvAdapter:
         self.env = env
         self.render = render
 
+    def get_input_shape(self):
+        raise NotImplementedError('get_input_shape method must be implemented')
+
     def reset(self):
         raise NotImplementedError('reset method must be implemented')
 

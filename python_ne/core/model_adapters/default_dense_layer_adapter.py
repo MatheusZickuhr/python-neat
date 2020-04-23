@@ -6,7 +6,7 @@ class DefaultDenseLayerAdapter(DenseLayerAdapter):
         return self.layer.units
 
     def get_activation(self):
-        return self.layer.activation
+        return self.layer.activation.__name__
 
     def get_weights(self):
         return self.layer.get_weights()

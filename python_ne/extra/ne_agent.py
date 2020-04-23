@@ -16,8 +16,8 @@ class NeAgent:
         self.reward_if_max_step_reached = 0
 
     def train(self, number_of_generations, selection_percentage, mutation_chance,
-              input_shape, population_size, fitness_threshold, neural_network_config,
-              play_n_times=1, max_n_steps=float('inf'), reward_if_max_step_reached=0):
+              population_size, fitness_threshold, neural_network_config, play_n_times=1,
+              max_n_steps=float('inf'), reward_if_max_step_reached=0):
 
         self.play_n_times = play_n_times
         self.max_n_steps = max_n_steps
@@ -25,8 +25,7 @@ class NeAgent:
 
         self.genetic_algorithm = GeneticAlgorithm(
             population_size=population_size,
-            input_shape=input_shape,
-            output_size=self.env_adapter.get_n_actions(),
+            input_shape=self.env_adapter.get_input_shape(),
             selection_percentage=selection_percentage,
             mutation_chance=mutation_chance,
             fitness_threshold=fitness_threshold,

@@ -5,6 +5,9 @@ import random
 class PleEnvAdapter(EnvAdapter):
     """Pygame learning env adapter"""
 
+    def get_input_shape(self):
+        return (len(self.env.getGameState()),)
+
     def reset(self):
         self.env.reset_game()
 

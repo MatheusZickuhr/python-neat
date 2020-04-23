@@ -18,11 +18,14 @@ if __name__ == '__main__':
     agent.train(
         number_of_generations=1000,
         population_size=500,
-        input_shape=(8,),
         selection_percentage=0.5,
         mutation_chance=0.1,
         fitness_threshold=20000,
-        neural_network_config=[256, 256],
+        neural_network_config=(
+            (512, 'sigmoid'),
+            (512, 'sigmoid'),
+            (env_adapter.get_n_actions(), 'sigmoid')
+        ),
         play_n_times=5,
         max_n_steps=250,
         reward_if_max_step_reached=-100

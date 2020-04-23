@@ -3,21 +3,18 @@ import random
 import numpy as np
 from python_ne.core.ga_neural_network.ga_neural_network import GaNeuralNetwork
 from python_ne.core.ga import randomly_combine_lists
-from python_ne.core.neural_network.dense_layer import DenseLayer
-from python_ne.core.neural_network.neural_network import NeuralNetwork
-from python_ne.core.neural_network import activations
 
 
 class NeNeuralNetwork(GaNeuralNetwork):
     def create_model(self):
         model = self.model_adapter()
-        for i, unit_count in enumerate(self.neural_network_config):
+        for i, layer_config in enumerate(self.neural_network_config):
+            unit_count, activation = layer_config
             if i == 0:
-                model.add_dense_layer(activation='sigmoid', input_shape=self.input_shape, units=unit_count, )
+                model.add_dense_layer(activation=activation, input_shape=self.input_shape, units=unit_count, )
             else:
-                model.add_dense_layer(activation='sigmoid', units=unit_count, )
+                model.add_dense_layer(activation=activation, units=unit_count, )
 
-        model.add_dense_layer(activation='sigmoid', units=self.output_size, )
         return model
 
     def crossover(self, other):
@@ -28,8 +25,8 @@ class NeNeuralNetwork(GaNeuralNetwork):
         children = []
 
         for _ in range(n_children):
-            child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                    model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
+            child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, model_adapter=self.model_adapter,
+                                    neural_network_config=self.neural_network_config)
             children.append(child)
             child.model = self.model_adapter()
             for layer1, layer2 in zip(self.model.get_layers(), other.model.get_layers()):
@@ -49,16 +46,24 @@ class NeNeuralNetwork(GaNeuralNetwork):
                     weights=(child_weights, child_bias),
                     input_shape=layer1.get_input_shape(),
                     units=layer1.get_units(),
-                    activation='sigmoid'
+                    activation=layer1.get_activation()
                 )
 
         return children
 
     def complex_crossover(self, other):
-        child1 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                 model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
-        child2 = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                 model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
+        child1 = NeNeuralNetwork(
+            create_model=False,
+            input_shape=self.input_shape,
+            model_adapter=self.model_adapter,
+            neural_network_config=self.neural_network_config
+        )
+        child2 = NeNeuralNetwork(
+            create_model=False,
+            input_shape=self.input_shape,
+            model_adapter=self.model_adapter,
+            neural_network_config=self.neural_network_config
+        )
 
         child1.model = self.model_adapter()
         child2.model = self.model_adapter()
@@ -84,13 +89,13 @@ class NeNeuralNetwork(GaNeuralNetwork):
                 weights=[weight_combination1, bias_combination_1],
                 input_shape=parent1_layer.get_input_shape(),
                 units=parent1_layer.get_units(),
-                activation='sigmoid'
+                activation=parent1_layer.get_activation()
             )
             child2.model.add_dense_layer(
                 weights=[weight_combination2, bias_combination_2],
                 input_shape=parent1_layer.get_input_shape(),
                 units=parent1_layer.get_units(),
-                activation='sigmoid'
+                activation=parent1_layer.get_activation()
             )
         return child1, child2
 
@@ -99,8 +104,13 @@ class NeNeuralNetwork(GaNeuralNetwork):
         children = []
 
         for i in range(n_children):
-            child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, output_size=self.output_size,
-                                    model_adapter=self.model_adapter, neural_network_config=self.neural_network_config)
+            child = NeNeuralNetwork(
+                create_model=False,
+                input_shape=self.input_shape,
+                model_adapter=self.model_adapter,
+                neural_network_config=self.neural_network_config
+            )
+
             children.append(child)
             child.model = self.model_adapter()
             for layers in zip(self.model.get_layers(), other.model.get_layers()):
@@ -109,7 +119,7 @@ class NeNeuralNetwork(GaNeuralNetwork):
                     units=chosen_layer.get_units(),
                     input_shape=chosen_layer.get_input_shape(),
                     weights=chosen_layer.get_weights(),
-                    activation='sigmoid'
+                    activation=chosen_layer.get_activation()
                 )
 
         return children

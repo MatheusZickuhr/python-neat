@@ -25,11 +25,14 @@ if __name__ == '__main__':
     agent.train(
         number_of_generations=150,
         population_size=500,
-        input_shape=(8,),
         selection_percentage=0.5,
         mutation_chance=0.3,
         fitness_threshold=45,
-        neural_network_config=[512, 512]
+        neural_network_config=[
+            (512, 'sigmoid'),
+            (512, 'sigmoid'),
+            (env_adapter.get_n_actions(), 'sigmoid')
+        ]
     )
 
     agent.save('ne_agent.json')
