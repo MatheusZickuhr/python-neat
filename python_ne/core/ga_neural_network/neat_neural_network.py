@@ -6,14 +6,7 @@ from python_ne.core.ga_neural_network.ga_neural_network import GaNeuralNetwork
 class NeatNeuralNetwork(GaNeuralNetwork):
 
     def create_model(self):
-        model = self.model_adapter()
-
-        for i, layer_config in enumerate(self.neural_network_config):
-            units, activation = layer_config
-            if i == 0:
-                model.add_dense_layer(units=units, input_shape=self.input_shape, activation=activation)
-            else:
-                model.add_dense_layer(units=units, activation=activation)
+        model = super().create_model()
 
         model.initialize()
 
@@ -41,7 +34,6 @@ class NeatNeuralNetwork(GaNeuralNetwork):
         for i in range(n_children):
             child = NeatNeuralNetwork(
                 create_model=False,
-                input_shape=self.input_shape,
                 model_adapter=self.model_adapter,
                 neural_network_config=self.neural_network_config
             )

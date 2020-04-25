@@ -6,16 +6,6 @@ from python_ne.core.ga import randomly_combine_lists
 
 
 class NeNeuralNetwork(GaNeuralNetwork):
-    def create_model(self):
-        model = self.model_adapter()
-        for i, layer_config in enumerate(self.neural_network_config):
-            unit_count, activation = layer_config
-            if i == 0:
-                model.add_dense_layer(activation=activation, input_shape=self.input_shape, units=unit_count, )
-            else:
-                model.add_dense_layer(activation=activation, units=unit_count, )
-
-        return model
 
     def crossover(self, other):
         return self.complex_crossover_new(other)
@@ -25,7 +15,7 @@ class NeNeuralNetwork(GaNeuralNetwork):
         children = []
 
         for _ in range(n_children):
-            child = NeNeuralNetwork(create_model=False, input_shape=self.input_shape, model_adapter=self.model_adapter,
+            child = NeNeuralNetwork(create_model=False, model_adapter=self.model_adapter,
                                     neural_network_config=self.neural_network_config)
             children.append(child)
             child.model = self.model_adapter()
@@ -54,13 +44,11 @@ class NeNeuralNetwork(GaNeuralNetwork):
     def complex_crossover(self, other):
         child1 = NeNeuralNetwork(
             create_model=False,
-            input_shape=self.input_shape,
             model_adapter=self.model_adapter,
             neural_network_config=self.neural_network_config
         )
         child2 = NeNeuralNetwork(
             create_model=False,
-            input_shape=self.input_shape,
             model_adapter=self.model_adapter,
             neural_network_config=self.neural_network_config
         )
@@ -106,7 +94,6 @@ class NeNeuralNetwork(GaNeuralNetwork):
         for i in range(n_children):
             child = NeNeuralNetwork(
                 create_model=False,
-                input_shape=self.input_shape,
                 model_adapter=self.model_adapter,
                 neural_network_config=self.neural_network_config
             )

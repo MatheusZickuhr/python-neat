@@ -21,13 +21,12 @@ def calc_fitness(element):
 if __name__ == '__main__':
     genetic_algorithm = GeneticAlgorithm(
         population_size=200,
-        input_shape=(2,),
         selection_percentage=0.5,
         mutation_chance=0.1,
         fitness_threshold=4,
         ne_type=NeNeuralNetwork,
         model_adapter=DefaultModelAdapter,
-        neural_network_config=[(128, 'sigmoid'), (128, 'sigmoid'), (2, 'sigmoid')],
+        neural_network_config=[((2,), 16, 'tanh'), (16, 'tanh'), (2, 'tanh')],
         console_log=True
     )
 

@@ -3,10 +3,9 @@ import random
 
 class GaNeuralNetwork:
 
-    def __init__(self, model_adapter, neural_network_config=None, create_model=True,input_shape=None, ):
+    def __init__(self, model_adapter, neural_network_config=None, create_model=True):
         self.model_adapter = model_adapter
         self.neural_network_config = neural_network_config
-        self.input_shape = input_shape
         self.fitness = 0
         self.raw_fitness = 0
         self.dense_layers = list()
@@ -14,7 +13,15 @@ class GaNeuralNetwork:
         self.was_evaluated = False
 
     def create_model(self):
-        raise NotImplementedError()
+        model = self.model_adapter()
+        for i, layer_config in enumerate(self.neural_network_config):
+            if i == 0:
+                input_shape, unit_count, activation = layer_config
+                model.add_dense_layer(activation=activation, input_shape=input_shape, units=unit_count, )
+            else:
+                unit_count, activation = layer_config
+                model.add_dense_layer(activation=activation, units=unit_count, )
+        return model
 
     def get_output(self, obs):
         return self.model.predict(obs)

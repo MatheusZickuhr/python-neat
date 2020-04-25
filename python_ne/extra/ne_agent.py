@@ -25,7 +25,6 @@ class NeAgent:
 
         self.genetic_algorithm = GeneticAlgorithm(
             population_size=population_size,
-            input_shape=self.env_adapter.get_input_shape(),
             selection_percentage=selection_percentage,
             mutation_chance=mutation_chance,
             fitness_threshold=fitness_threshold,

@@ -16,8 +16,8 @@ if __name__ == '__main__':
     )
 
     nn_config = (
-        (16, 'sigmoid'),
-        (16, 'sigmoid'),
+        (env_adapter.get_input_shape(), 16, 'tanh'),
+        (16, 'tanh'),
         (env_adapter.get_continuous_space_len(), 'tanh')
     )
 

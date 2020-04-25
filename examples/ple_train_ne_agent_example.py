@@ -29,7 +29,7 @@ if __name__ == '__main__':
         mutation_chance=0.3,
         fitness_threshold=45,
         neural_network_config=[
-            (512, 'sigmoid'),
+            (env_adapter.get_input_shape(), 512, 'sigmoid'),
             (512, 'sigmoid'),
             (env_adapter.get_n_actions(), 'sigmoid')
         ]

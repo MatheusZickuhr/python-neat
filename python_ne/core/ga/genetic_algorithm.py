@@ -6,10 +6,9 @@ from tqdm import tqdm
 
 class GeneticAlgorithm:
 
-    def __init__(self, population_size, selection_percentage, mutation_chance, input_shape,
-                 fitness_threshold, ne_type, neural_network_config, model_adapter, console_log=True):
+    def __init__(self, population_size, selection_percentage, mutation_chance, fitness_threshold,
+                 ne_type, neural_network_config, model_adapter, console_log=True):
         self.population_size = population_size
-        self.input_shape = input_shape
         self.ne_nn_class_type = ne_type
         self.population = self.create_population(neural_network_config, model_adapter)
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
@@ -18,7 +17,7 @@ class GeneticAlgorithm:
         self.logger = GaLogger(console_log=console_log)
 
     def create_population(self, neural_network_config, model_adapter):
-        return [self.ne_nn_class_type(input_shape=self.input_shape, model_adapter=model_adapter,
+        return [self.ne_nn_class_type(model_adapter=model_adapter,
                                       neural_network_config=neural_network_config)
                 for _ in tqdm(range(self.population_size), unit='population element created')]
 
