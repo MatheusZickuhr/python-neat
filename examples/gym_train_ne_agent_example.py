@@ -16,17 +16,17 @@ if __name__ == '__main__':
     )
 
     nn_config = (
-        (env_adapter.get_input_shape(), 16, 'tanh'),
-        (16, 'tanh'),
+        (env_adapter.get_input_shape(), 128, 'tanh'),
+        (128, 'tanh'),
         (env_adapter.get_continuous_space_len(), 'tanh')
     )
 
     agent.train(
         number_of_generations=1000,
-        population_size=200,
-        selection_percentage=0.5,
-        mutation_chance=0.1,
-        fitness_threshold=20000,
+        population_size=300,
+        selection_percentage=0.9,
+        mutation_chance=0.01,
+        fitness_threshold=300,
         neural_network_config=nn_config,
     )
 

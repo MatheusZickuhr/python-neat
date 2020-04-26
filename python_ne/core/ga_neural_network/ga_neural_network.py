@@ -29,7 +29,7 @@ class GaNeuralNetwork:
     def crossover(self, other):
         raise NotImplementedError()
 
-    def mutate(self):
+    def mutate(self, mutation_chance):
         for layer in self.model.get_layers():
             weights, bias = layer.get_weights()
 
@@ -37,11 +37,11 @@ class GaNeuralNetwork:
 
             for prev_neuron in range(prev_layer_neuron_count):
                 for cur_neuron in range(current_layer_neuron_count):
-                    if random.random() < 0.1:
+                    if random.random() < mutation_chance:
                         weights[prev_neuron][cur_neuron] = random.uniform(-1, 1)
 
             for i in range(len(bias)):
-                if random.random() < 0.1:
+                if random.random() < mutation_chance:
                     bias[i] = random.uniform(-1, 1)
 
             layer.set_weights((weights, bias))

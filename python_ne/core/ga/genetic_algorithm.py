@@ -55,8 +55,7 @@ class GeneticAlgorithm:
 
     def mutate(self, new_elements):
         for element in new_elements:
-            if random.random() <= self.mutation_chance:
-                element.mutate()
+            element.mutate(self.mutation_chance)
 
     def recycle(self, new_elements):
         self.population.sort(key=lambda element: element.fitness)
