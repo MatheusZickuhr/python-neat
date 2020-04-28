@@ -1,15 +1,14 @@
-import random
+from python_ne.core.ga import random_probability_selection
+from python_ne.core.ga.ga_neural_network import GaNeuralNetwork
 from python_ne.core.ga.logger import GaLogger
-from python_ne.core.ga.random_probability_selection import RandomProbabilitySelection
 from tqdm import tqdm
 
 
 class GeneticAlgorithm:
 
     def __init__(self, population_size, selection_percentage, mutation_chance, fitness_threshold,
-                 ne_type, neural_network_config, model_adapter, console_log=True):
+                 neural_network_config, model_adapter, console_log=True):
         self.population_size = population_size
-        self.ne_nn_class_type = ne_type
         self.population = self.create_population(neural_network_config, model_adapter)
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
         self.mutation_chance = mutation_chance
@@ -17,8 +16,7 @@ class GeneticAlgorithm:
         self.logger = GaLogger(console_log=console_log)
 
     def create_population(self, neural_network_config, model_adapter):
-        return [self.ne_nn_class_type(model_adapter=model_adapter,
-                                      neural_network_config=neural_network_config)
+        return [GaNeuralNetwork(model_adapter=model_adapter, neural_network_config=neural_network_config)
                 for _ in tqdm(range(self.population_size), unit='population element created')]
 
     def run(self, number_of_generations, calculate_fitness_callback):
@@ -39,11 +37,12 @@ class GeneticAlgorithm:
 
     def crossover(self):
         total_fitness = sum([element.fitness for element in self.population])
-        random_probability_selection = RandomProbabilitySelection()
-        random_probability_selection.add_elements(
-            [{'data': element, 'probability': element.fitness / total_fitness} for element in self.population]
+        selected_elements = random_probability_selection.perform_selection(
+            [(e, e.fitness / total_fitness) for e in self.population],
+            self.number_of_selected_elements
         )
-        selected_elements = random_probability_selection.perform_selection(self.number_of_selected_elements)
+
+        selected_elements.sort(key=lambda element: element.fitness, reverse=True)
 
         new_elements = []
 

@@ -1,14 +1,15 @@
 import numpy as np
+
+from python_ne.core.ga.ga_neural_network import GaNeuralNetwork
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
 from python_ne.core.neural_network import normalizer
 
 
 class NeAgent:
 
-    def __init__(self, env_adapter, model_adapter, ne_type):
+    def __init__(self, env_adapter, model_adapter):
         self.env_adapter = env_adapter
         self.model_adapter = model_adapter
-        self.ne_type = ne_type
         self.best_element = None
         self.genetic_algorithm = None
         self.play_n_times = 1
@@ -28,7 +29,6 @@ class NeAgent:
             selection_percentage=selection_percentage,
             mutation_chance=mutation_chance,
             fitness_threshold=fitness_threshold,
-            ne_type=self.ne_type,
             model_adapter=self.model_adapter,
             neural_network_config=neural_network_config
         )
@@ -50,7 +50,7 @@ class NeAgent:
         self.best_element.save(file_path)
 
     def load(self, file_path):
-        self.best_element = self.ne_type(
+        self.best_element = GaNeuralNetwork(
             create_model=False,
             model_adapter=self.model_adapter
         )

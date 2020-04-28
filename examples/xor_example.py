@@ -1,9 +1,7 @@
-from python_ne.core.ga_neural_network.neat_neural_network import NeatNeuralNetwork
+from python_ne.core.ga.ga_neural_network import GaNeuralNetwork
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
 import numpy as np
-
-from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 
 
 def calc_fitness(element):
@@ -21,12 +19,11 @@ def calc_fitness(element):
 if __name__ == '__main__':
     genetic_algorithm = GeneticAlgorithm(
         population_size=200,
-        selection_percentage=0.5,
-        mutation_chance=0.1,
+        selection_percentage=0.9,
+        mutation_chance=0.01,
         fitness_threshold=4,
-        ne_type=NeNeuralNetwork,
         model_adapter=DefaultModelAdapter,
-        neural_network_config=[((2,), 16, 'tanh'), (16, 'tanh'), (2, 'tanh')],
+        neural_network_config=[((2,), 8, 'tanh'), (2, 'tanh')],
         console_log=True
     )
 

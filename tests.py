@@ -2,6 +2,7 @@ import unittest
 
 import numpy as np
 
+from python_ne.core.ga import random_probability_selection
 from python_ne.core.neural_network.dense_layer import DenseLayer
 from python_ne.core.neural_network.neural_network import NeuralNetwork
 
@@ -139,6 +140,39 @@ class NeuralNetworkTest(unittest.TestCase):
 
         for original_layer, layer_from_file in zip(nn.layers, nn_from_file.layers):
             self.assertEqual(str(original_layer.get_weights()), str(layer_from_file.get_weights()))
+
+
+class RandomProbabilitySelectorTest(unittest.TestCase):
+
+    def test1(self):
+        elements = [
+            ('name1', 0.05),
+            ('name2', 0.1),
+            ('name3', 0.15),
+            ('name4', 0.4),
+            ('name5', 0.3)
+        ]
+        elements_len = len(elements)
+        result = {
+            'name1': 0,
+            'name2': 0,
+            'name3': 0,
+            'name4': 0,
+            'name5': 0,
+        }
+
+        selected_elements_count = 2
+        for i in range(50):
+            selected_elements = random_probability_selection.perform_selection(elements, selected_elements_count)
+            self.assertEqual(selected_elements_count, len(selected_elements))
+            # check if the original list was not altered
+            self.assertEqual(elements_len, len(elements))
+            # check for repeated elements
+            self.assertEqual(selected_elements_count, len(set(selected_elements)))
+            for element in selected_elements:
+                result[element] += 1
+
+        print(result)
 
 
 if __name__ == '__main__':

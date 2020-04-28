@@ -1,33 +1,33 @@
 import gym
-from python_ne.core.ga_neural_network.ne_neural_network import NeNeuralNetwork
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.extra.env_adapters.gym_env_adapter import GymEnvAdapter
 from python_ne.extra.ne_agent import NeAgent
 
 if __name__ == '__main__':
-    env = gym.make('BipedalWalker-v3')
+    env = gym.make('LunarLander-v2')
 
-    env_adapter = GymEnvAdapter(env=env, render=False, continuous=True)
+    env_adapter = GymEnvAdapter(env=env, render=False, continuous=False)
 
     agent = NeAgent(
         env_adapter=env_adapter,
-        ne_type=NeNeuralNetwork,
         model_adapter=DefaultModelAdapter,
     )
 
     nn_config = (
-        (env_adapter.get_input_shape(), 128, 'tanh'),
-        (128, 'tanh'),
-        (env_adapter.get_continuous_space_len(), 'tanh')
+        (env_adapter.get_input_shape(), 16, 'tanh'),
+        (env_adapter.get_n_actions(), 'tanh')
     )
 
     agent.train(
         number_of_generations=1000,
-        population_size=300,
+        population_size=500,
         selection_percentage=0.9,
         mutation_chance=0.01,
-        fitness_threshold=300,
+        fitness_threshold=250,
         neural_network_config=nn_config,
+        play_n_times=5,
+        max_n_steps=300,
+        reward_if_max_step_reached=-200
     )
 
     agent.save('ne_agent.json')

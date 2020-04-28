@@ -8,7 +8,7 @@ from python_ne.extra.ne_agent import NeAgent
 if __name__ == '__main__':
     env = gym.make('LunarLander-v2')
 
-    env_adapter = GymEnvAdapter(env=env, render=True)
+    env_adapter = GymEnvAdapter(env=env, render=False)
 
     agent = NeAgent(
         env_adapter=env_adapter,
@@ -17,5 +17,9 @@ if __name__ == '__main__':
     )
 
     agent.load('ne_agent.json')
-    while 1:
-        print(agent.play())
+    # agent.max_n_steps = 300
+    total_r = 0
+    for i in range(100):
+        total_r += agent.play()
+        if i > 0:
+            print(total_r / i)
