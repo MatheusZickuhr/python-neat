@@ -1,6 +1,7 @@
-from python_ne.core.ga.ga_neural_network import GaNeuralNetwork
+from python_ne.core.ga.mutation_strategies import Mutation1, NoMutation
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
+from python_ne.core.ga.crossover_strategies import NoCrossover, Crossover1, Crossover2, Crossover3
 import numpy as np
 
 
@@ -23,6 +24,8 @@ if __name__ == '__main__':
         mutation_chance=0.01,
         fitness_threshold=4,
         model_adapter=DefaultModelAdapter,
+        crossover_strategy=Crossover1(),
+        mutation_strategy=Mutation1(),
         neural_network_config=[((2,), 8, 'tanh'), (2, 'tanh')],
         console_log=True
     )

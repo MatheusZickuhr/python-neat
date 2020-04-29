@@ -28,5 +28,9 @@ class ModelAdapter:
         raise NotImplementedError()
 
     @staticmethod
+    def new_instance():
+        raise NotImplementedError()
+
+    @staticmethod
     def load(file_path):
         raise NotImplementedError()

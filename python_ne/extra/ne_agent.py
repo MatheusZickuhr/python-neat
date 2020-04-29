@@ -17,7 +17,8 @@ class NeAgent:
         self.reward_if_max_step_reached = 0
 
     def train(self, number_of_generations, selection_percentage, mutation_chance,
-              population_size, fitness_threshold, neural_network_config, play_n_times=1,
+              population_size, fitness_threshold, neural_network_config, crossover_strategy,
+              mutation_strategy, play_n_times=1,
               max_n_steps=float('inf'), reward_if_max_step_reached=0):
 
         self.play_n_times = play_n_times
@@ -29,6 +30,8 @@ class NeAgent:
             selection_percentage=selection_percentage,
             mutation_chance=mutation_chance,
             fitness_threshold=fitness_threshold,
+            mutation_strategy=mutation_strategy,
+            crossover_strategy=crossover_strategy,
             model_adapter=self.model_adapter,
             neural_network_config=neural_network_config
         )

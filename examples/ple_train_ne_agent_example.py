@@ -1,5 +1,7 @@
 import os
 
+from python_ne.core.ga.crossover_strategies import Crossover1, NoCrossover
+from python_ne.core.ga.mutation_strategies import Mutation1
 
 os.putenv('SDL_VIDEODRIVER', 'fbcon')
 os.environ["SDL_VIDEODRIVER"] = "dummy"
@@ -28,6 +30,8 @@ if __name__ == '__main__':
         selection_percentage=0.9,
         mutation_chance=0.01,
         fitness_threshold=100,
+        crossover_strategy=NoCrossover(),
+        mutation_strategy=Mutation1(),
         neural_network_config=[
             (env_adapter.get_input_shape(), 16, 'tanh'),
             (env_adapter.get_n_actions(), 'tanh')

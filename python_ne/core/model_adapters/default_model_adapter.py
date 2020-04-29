@@ -7,6 +7,10 @@ from python_ne.core.neural_network.neural_network import NeuralNetwork
 
 class DefaultModelAdapter(ModelAdapter):
 
+    @staticmethod
+    def new_instance():
+        return DefaultModelAdapter()
+
     def initialize(self):
         self.model.initialize()
 

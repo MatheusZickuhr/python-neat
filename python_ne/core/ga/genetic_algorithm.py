@@ -7,7 +7,9 @@ from tqdm import tqdm
 class GeneticAlgorithm:
 
     def __init__(self, population_size, selection_percentage, mutation_chance, fitness_threshold,
-                 neural_network_config, model_adapter, console_log=True):
+                 neural_network_config, model_adapter, crossover_strategy, mutation_strategy, console_log=True):
+        self.crossover_strategy = crossover_strategy
+        self.mutation_strategy = mutation_strategy
         self.population_size = population_size
         self.population = self.create_population(neural_network_config, model_adapter)
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
@@ -48,13 +50,13 @@ class GeneticAlgorithm:
 
         # iterate by pairs of elements
         for element1, element2 in zip(selected_elements[0::2], selected_elements[1::2]):
-            new_elements.extend(element1.crossover(element2))
+            new_elements.extend(self.crossover_strategy.run(element1, element2))
 
         return new_elements
 
     def mutate(self, new_elements):
         for element in new_elements:
-            element.mutate(self.mutation_chance)
+            self.mutation_strategy.run(element, self.mutation_chance)
 
     def recycle(self, new_elements):
         self.population.sort(key=lambda element: element.fitness)
