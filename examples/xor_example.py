@@ -1,3 +1,4 @@
+from python_ne.core.ga.logger import GaLogger
 from python_ne.core.ga.mutation_strategies import Mutation1, NoMutation
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
@@ -30,11 +31,16 @@ if __name__ == '__main__':
         console_log=True
     )
 
+    logger = GaLogger()
+    genetic_algorithm.add_observer(logger)
+
     genetic_algorithm.run(
         number_of_generations=1000,
         calculate_fitness_callback=calc_fitness
     )
-    genetic_algorithm.save_log_data('file.csv')
+
+    logger.save_as_csv('file.csv')
+
     best_element = genetic_algorithm.get_best_element()
 
     print(f'the fitness of the best element is {best_element.raw_fitness}')

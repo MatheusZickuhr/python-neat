@@ -1,13 +1,18 @@
+import time
+
 from python_ne.core.ga import random_probability_selection
 from python_ne.core.ga.ga_neural_network import GaNeuralNetwork
 from python_ne.core.ga.logger import GaLogger
 from tqdm import tqdm
 
+from python_ne.utils.observed import Observed
 
-class GeneticAlgorithm:
+
+class GeneticAlgorithm(Observed):
 
     def __init__(self, population_size, selection_percentage, mutation_chance, fitness_threshold,
                  neural_network_config, model_adapter, crossover_strategy, mutation_strategy, console_log=True):
+        super(GeneticAlgorithm, self).__init__()
         self.crossover_strategy = crossover_strategy
         self.mutation_strategy = mutation_strategy
         self.population_size = population_size
@@ -15,7 +20,6 @@ class GeneticAlgorithm:
         self.number_of_selected_elements = int(len(self.population) * selection_percentage)
         self.mutation_chance = mutation_chance
         self.fitness_threshold = fitness_threshold
-        self.logger = GaLogger(console_log=console_log)
 
     def create_population(self, neural_network_config, model_adapter):
         return [GaNeuralNetwork(model_adapter=model_adapter, neural_network_config=neural_network_config)
@@ -23,15 +27,19 @@ class GeneticAlgorithm:
 
     def run(self, number_of_generations, calculate_fitness_callback):
         for generation in range(number_of_generations):
-            self.logger.start_generation_log()
+            start_generation_time = time.time()
             self.calculate_fitness(calculate_fitness_callback)
             self.normalize_fitness()
             new_elements = self.crossover()
             self.mutate(new_elements)
             self.recycle(new_elements)
             best_element = self.get_best_element()
-            self.logger.finish_log_generation(
-                generation=generation,
+            generation_time = time.time() - start_generation_time
+            self.notify_observers(
+                current_generation=generation + 1,
+                number_of_generations=number_of_generations,
+                generation_time=generation_time,
+                population=self.population,
                 best_element_fitness=best_element.raw_fitness
             )
             if best_element.raw_fitness >= self.fitness_threshold:
@@ -78,6 +86,3 @@ class GeneticAlgorithm:
     def get_best_element(self):
         self.population.sort(key=lambda element: element.fitness)
         return self.population[-1]
-
-    def save_log_data(self, file_path):
-        self.logger.save_as_csv(file_path)

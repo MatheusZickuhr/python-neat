@@ -1,28 +1,27 @@
 import time
 import csv
 
+from python_ne.utils.observer import Observer
 
-class GaLogger:
 
-    def __init__(self, console_log=True):
-        self.logged_data = []
-        self.generation_start_time = 0
-        self.console_log = console_log
+class GaLogger(Observer):
 
-    def start_generation_log(self):
-        self.generation_start_time = time.time()
+    def notify(self, *args, **kwargs):
 
-    def finish_log_generation(self, generation, best_element_fitness):
-        time_to_run_generation = time.time() - self.generation_start_time
         data = {
-            'generation': generation,
-            'best_element_fitness': best_element_fitness,
-            'time_to_run_generation': time_to_run_generation
+            'generation': kwargs['current_generation'],
+            'best_element_fitness': kwargs['best_element_fitness'],
+            'time_to_run_generation': kwargs['generation_time']
         }
+
         self.logged_data.append(data)
 
-        if self.console_log:
-            print(data)
+        print(f'generation={kwargs["current_generation"]}/{kwargs["number_of_generations"]},' +
+              f' bestfitness={kwargs["best_element_fitness"]}, runtime={kwargs["generation_time"]}')
+
+    def __init__(self):
+        self.logged_data = []
+        self.generation_start_time = 0
 
     def save_as_csv(self, file_path):
         file = open(file_path, 'w+')

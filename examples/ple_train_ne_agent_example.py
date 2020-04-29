@@ -2,6 +2,7 @@ import os
 
 from python_ne.core.ga.crossover_strategies import Crossover1, NoCrossover
 from python_ne.core.ga.mutation_strategies import Mutation1
+from python_ne.core.model_adapters.keras_model_adapter import KerasModelAdapter
 
 os.putenv('SDL_VIDEODRIVER', 'fbcon')
 os.environ["SDL_VIDEODRIVER"] = "dummy"
@@ -21,7 +22,7 @@ if __name__ == '__main__':
 
     agent = NeAgent(
         env_adapter=env_adapter,
-        model_adapter=DefaultModelAdapter,
+        model_adapter=KerasModelAdapter,
     )
 
     agent.train(
@@ -29,7 +30,7 @@ if __name__ == '__main__':
         population_size=500,
         selection_percentage=0.9,
         mutation_chance=0.01,
-        fitness_threshold=100,
+        fitness_threshold=50,
         crossover_strategy=NoCrossover(),
         mutation_strategy=Mutation1(),
         neural_network_config=[
