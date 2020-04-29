@@ -18,8 +18,8 @@ class NeAgent:
 
     def train(self, number_of_generations, selection_percentage, mutation_chance,
               population_size, fitness_threshold, neural_network_config, crossover_strategy,
-              mutation_strategy, play_n_times=1,
-              max_n_steps=float('inf'), reward_if_max_step_reached=0):
+              mutation_strategy, play_n_times=1, max_n_steps=float('inf'),
+              reward_if_max_step_reached=0, loggers=[]):
 
         self.play_n_times = play_n_times
         self.max_n_steps = max_n_steps
@@ -35,6 +35,9 @@ class NeAgent:
             model_adapter=self.model_adapter,
             neural_network_config=neural_network_config
         )
+
+        for logger in loggers:
+            self.genetic_algorithm.add_observer(logger)
 
         try:
             self.genetic_algorithm.run(

@@ -1,5 +1,6 @@
 import os
 
+from python_ne.core.ga.console_logger import ConsoleLogger
 from python_ne.core.ga.crossover_strategies import Crossover1, NoCrossover
 from python_ne.core.ga.mutation_strategies import Mutation1
 from python_ne.core.model_adapters.keras_model_adapter import KerasModelAdapter
@@ -36,7 +37,8 @@ if __name__ == '__main__':
         neural_network_config=[
             (env_adapter.get_input_shape(), 16, 'tanh'),
             (env_adapter.get_n_actions(), 'tanh')
-        ]
+        ],
+        loggers=(ConsoleLogger(),)
     )
 
     agent.save('ne_agent.json')

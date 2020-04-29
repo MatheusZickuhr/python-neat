@@ -1,4 +1,8 @@
 import gym
+
+from python_ne.core.ga.console_logger import ConsoleLogger
+from python_ne.core.ga.crossover_strategies import NoCrossover
+from python_ne.core.ga.mutation_strategies import Mutation1
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.extra.env_adapters.gym_env_adapter import GymEnvAdapter
 from python_ne.extra.ne_agent import NeAgent
@@ -25,6 +29,9 @@ if __name__ == '__main__':
         mutation_chance=0.01,
         fitness_threshold=250,
         neural_network_config=nn_config,
+        crossover_strategy=NoCrossover(),
+        mutation_strategy=Mutation1(),
+        loggers=(ConsoleLogger(),),
         play_n_times=5,
         max_n_steps=300,
         reward_if_max_step_reached=-200

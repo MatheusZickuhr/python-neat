@@ -1,4 +1,6 @@
-from python_ne.core.ga.logger import GaLogger
+from python_ne.core.ga.csv_logger import CsvLogger
+from python_ne.core.ga.console_logger import ConsoleLogger
+from python_ne.core.ga.matplotlib_logger import MatplotlibLogger
 from python_ne.core.ga.mutation_strategies import Mutation1, NoMutation
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
@@ -28,18 +30,23 @@ if __name__ == '__main__':
         crossover_strategy=Crossover1(),
         mutation_strategy=Mutation1(),
         neural_network_config=[((2,), 8, 'tanh'), (2, 'tanh')],
-        console_log=True
     )
 
-    logger = GaLogger()
-    genetic_algorithm.add_observer(logger)
+    csv_logger = CsvLogger()
+    genetic_algorithm.add_observer(csv_logger)
+    matplotlib_logger = MatplotlibLogger()
+    genetic_algorithm.add_observer(matplotlib_logger)
+    genetic_algorithm.add_observer(ConsoleLogger())
 
     genetic_algorithm.run(
         number_of_generations=1000,
         calculate_fitness_callback=calc_fitness
     )
 
-    logger.save_as_csv('file.csv')
+    csv_logger.save('file.csv')
+    matplotlib_logger.save_fitness_chart('fitness.png')
+    matplotlib_logger.save_time_chart('time.png')
+    matplotlib_logger.save_std_chart('std.png')
 
     best_element = genetic_algorithm.get_best_element()
 

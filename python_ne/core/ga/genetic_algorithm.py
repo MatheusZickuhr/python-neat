@@ -1,8 +1,9 @@
 import time
 
+import numpy as np
+
 from python_ne.core.ga import random_probability_selection
 from python_ne.core.ga.ga_neural_network import GaNeuralNetwork
-from python_ne.core.ga.logger import GaLogger
 from tqdm import tqdm
 
 from python_ne.utils.observed import Observed
@@ -11,7 +12,7 @@ from python_ne.utils.observed import Observed
 class GeneticAlgorithm(Observed):
 
     def __init__(self, population_size, selection_percentage, mutation_chance, fitness_threshold,
-                 neural_network_config, model_adapter, crossover_strategy, mutation_strategy, console_log=True):
+                 neural_network_config, model_adapter, crossover_strategy, mutation_strategy):
         super(GeneticAlgorithm, self).__init__()
         self.crossover_strategy = crossover_strategy
         self.mutation_strategy = mutation_strategy
@@ -39,7 +40,7 @@ class GeneticAlgorithm(Observed):
                 current_generation=generation + 1,
                 number_of_generations=number_of_generations,
                 generation_time=generation_time,
-                population=self.population,
+                population_fitness_std=np.array([e.raw_fitness for e in self.population]).std(),
                 best_element_fitness=best_element.raw_fitness
             )
             if best_element.raw_fitness >= self.fitness_threshold:
