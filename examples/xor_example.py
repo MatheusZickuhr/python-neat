@@ -1,10 +1,10 @@
 from python_ne.core.ga.csv_logger import CsvLogger
 from python_ne.core.ga.console_logger import ConsoleLogger
 from python_ne.core.ga.matplotlib_logger import MatplotlibLogger
-from python_ne.core.ga.mutation_strategies import Mutation1, NoMutation
+from python_ne.core.ga.mutation_strategies import Mutation1
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
-from python_ne.core.ga.crossover_strategies import NoCrossover, Crossover1, Crossover2, Crossover3
+from python_ne.core.ga.crossover_strategies import Crossover1
 import numpy as np
 
 
