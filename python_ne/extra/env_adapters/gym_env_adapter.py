@@ -3,6 +3,12 @@ from python_ne.extra.env_adapters.env_adapter import EnvAdapter
 
 class GymEnvAdapter(EnvAdapter):
 
+    def get_continuous_space_len(self):
+        return self.env.action_space.shape[0]
+
+    def get_input_shape(self):
+        return self.env.observation_space.shape
+
     def reset(self):
         self.env.reset()
 

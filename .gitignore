@@ -1,3 +1,10 @@
+MANIFEST
+PyGame-Learning-Environment/
+gym/
+/dist/
 /venv/
 /.idea/
 *.pyc
+*.json
+*.csv
+*.png

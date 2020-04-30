@@ -1,36 +1,30 @@
 import random
 
 
-class ListElement:
-    def __init__(self, probability, data):
-        self.data = data
-        self.probability = probability
+def perform_selection(elements, number_to_be_selected):
+    """
+    :param elements: list of tuples with the following structure: (data, probability)
+    :param number_to_be_selected: the number of elements that will be selected from the list
+    """
 
+    elements = sorted(elements, key=lambda e: e[1])
 
-class RandomProbabilitySelection:
+    selected_elements = []
 
-    def __init__(self):
-        self.elements = []
+    for _ in range(number_to_be_selected):
+        random_number = random.random()
+        probability_sum = 0
+        for index, element in enumerate(elements):
+            _, probability = element
+            probability_sum += probability
 
-    def perform_selection(self, number_to_be_selected):
-        self.elements.sort(key=lambda element: element.probability)
+            if random_number <= probability_sum:
+                selected_elements.append(element)
+                elements.pop(index)
+                break
 
-        selected_elements = []
+            elif element == elements[-1]:
+                selected_elements.append(element)
+                elements.pop(index)
 
-        for _ in range(number_to_be_selected):
-            random_number = random.random()
-            probability_sum = 0
-            for element in self.elements:
-                probability_sum += element.probability
-                if random_number <= probability_sum and element not in selected_elements:
-                    selected_elements.append(element)
-                    break
-
-        return [selected_element.data for selected_element in selected_elements]
-
-    def add_element(self, data, probability):
-        self.elements.append(ListElement(probability=probability, data=data))
-
-    def add_elements(self, elements):
-        for element in elements:
-            self.add_element(data=element['data'], probability=element['probability'])
+    return [selected_element[0] for selected_element in selected_elements]

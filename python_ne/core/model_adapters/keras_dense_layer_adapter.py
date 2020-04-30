@@ -1,7 +1,7 @@
-from python_ne.core.backend_adapters.dense_layer_adapter import DenseLayerAdapter
+from python_ne.core.model_adapters.dense_layer_adapter import DenseLayerAdapter
 
 
-class DefaultDenseLayerAdapter(DenseLayerAdapter):
+class KerasDenseLayerAdapter(DenseLayerAdapter):
     def get_units(self):
         return self.layer.units
 
@@ -15,4 +15,4 @@ class DefaultDenseLayerAdapter(DenseLayerAdapter):
         self.layer.set_weights(weights)
 
     def get_input_shape(self):
-        return self.layer.input_shape,
+        return self.layer.input_shape[1],
