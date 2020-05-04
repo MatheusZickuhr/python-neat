@@ -4,7 +4,7 @@ from python_ne.core.ga.matplotlib_logger import MatplotlibLogger
 from python_ne.core.ga.mutation_strategies import Mutation1
 from python_ne.core.model_adapters.default_model_adapter import DefaultModelAdapter
 from python_ne.core.ga.genetic_algorithm import GeneticAlgorithm
-from python_ne.core.ga.crossover_strategies import Crossover1
+from python_ne.core.ga.crossover_strategies import Crossover1, Crossover4, NoCrossover
 import numpy as np
 
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
         mutation_chance=0.01,
         fitness_threshold=4,
         model_adapter=DefaultModelAdapter,
-        crossover_strategy=Crossover1(),
+        crossover_strategy=Crossover4(),
         mutation_strategy=Mutation1(),
         neural_network_config=[((2,), 8, 'tanh'), (2, 'tanh')],
     )
