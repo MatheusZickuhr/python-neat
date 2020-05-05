@@ -151,10 +151,7 @@ class Crossover4(CrossoverStrategy):
         fittest_parent = max(parent1, parent2, key=lambda parent: parent.fitness)
         worst_parent = min(parent1, parent2, key=lambda parent: parent.fitness)
 
-        try:
-            chance = fittest_parent.fitness / (fittest_parent.fitness + worst_parent.fitness)
-        except ZeroDivisionError:
-            chance = 0.5
+        chance = 0.9
 
         for _ in range(n_children):
             child = GaNeuralNetwork(create_model=False, model_adapter=fittest_parent.model_adapter,
