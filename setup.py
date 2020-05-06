@@ -2,8 +2,8 @@ from distutils.core import setup
 
 setup(
     name='python-ne',
-    packages=['python_ne', 'python_ne/core', 'python_ne/extra', 'python_ne/utils', 'python_ne/core/model_adapters',
-              'python_ne/core/ga', 'python_ne/core/neural_network', 'python_ne/extra/env_adapters', ],
+    packages=['python_ne', 'python_ne/core', 'python_ne/utils', 'python_ne/core/model_adapters',
+              'python_ne/core/ga', 'python_ne/core/neural_network'],
     version='0.2',
     license='MIT',
     description='A neuroevolution library for python',
