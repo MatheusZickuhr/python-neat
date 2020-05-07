@@ -74,3 +74,7 @@ if __name__ == '__main__':
     print(f'the fitness of the best element is {best_element.raw_fitness}')
 
 ```
+
+# other examples are available here
+
+https://github.com/MatheusZickuhr/neuroevolution-sandbox

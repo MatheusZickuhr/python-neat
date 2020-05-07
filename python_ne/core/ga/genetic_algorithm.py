@@ -4,7 +4,6 @@ import numpy as np
 
 from python_ne.core.ga import random_probability_selection
 from python_ne.core.ga.ga_neural_network import GaNeuralNetwork
-from tqdm import tqdm
 
 from python_ne.utils.observed import Observed
 
@@ -24,7 +23,7 @@ class GeneticAlgorithm(Observed):
 
     def create_population(self, neural_network_config, model_adapter):
         return [GaNeuralNetwork(model_adapter=model_adapter, neural_network_config=neural_network_config)
-                for _ in tqdm(range(self.population_size), unit='population element created')]
+                for _ in range(self.population_size)]
 
     def run(self, number_of_generations, calculate_fitness_callback):
         for generation in range(number_of_generations):
