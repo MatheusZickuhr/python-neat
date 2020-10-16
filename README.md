@@ -1,6 +1,6 @@
 
 # python-ne
-A neuroevolution library for python
+Classic Neuroevolution implementation for python
 
 # how to install
 
